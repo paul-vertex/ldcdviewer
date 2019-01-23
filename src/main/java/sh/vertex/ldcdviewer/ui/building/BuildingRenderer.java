@@ -16,6 +16,9 @@ import sh.vertex.ldcdviewer.ui.building.floors.SecondFloor;
 import sh.vertex.ldcdviewer.ui.building.floors.ThirdFloor;
 import sh.vertex.ldcdviewer.util.TextUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Handles Mouse Events and Rendering
  *
@@ -123,12 +126,32 @@ public class BuildingRenderer {
         } else {
             gc.setFill(new Color(0.606, 0.654, 0.788, 1f));
             gc.setFont(copyright);
-            gc.fillText(text + "_", 1020 / 2 - 190, 514);
+            gc.fillText(text + (isSearching ? "_" : ""), 1020 / 2 - 190, 514);
+            gc.setTextAlign(TextAlignment.RIGHT);
+            gc.fillText(String.valueOf(this.getSearchResult().size()), 1020 / 2 + 190, 514);
+            gc.setTextAlign(TextAlignment.LEFT);
         }
 
         /*
             Actual Search
          */
+        List<String> rs = this.getSearchResult();
+        int result = rs.size() * 52;
+
+        if (rs.size() < 150) {
+            gc.setFill(new Color(0.169, 0.202, 0.318, 1f));
+            gc.fillRect(1020 / 2 - 200, 475 - result, 400, result);
+            for (int i = 0; i < rs.size(); i++) {
+                String name = rs.get(i);
+                boolean u0 = this.isUserInFloor(name);
+                gc.setFill(new Color(u0 ? 0.187 : 0.176, u0 ? 0.230 : 0.214, u0 ? 0.363 : 0.343, 1f));
+                gc.fillRect(1020 / 2 - 200, 475 - result + (i * 52), 400, 50);
+
+                gc.setFill(new Color(0.366, 0.422, 0.598, 1f));
+                gc.fillText(name, 1020 / 2 - 190, 505 - result + (i * 52));
+            }
+        }
+
 
         /*
             Hamburger Menu
@@ -166,6 +189,22 @@ public class BuildingRenderer {
         gc.fillRect(10, 10, 25, 4);
         gc.fillRect(10, 18, 25, 4);
         gc.fillRect(10, 26, 25, 4);
+    }
+
+    /**
+     * Check if user is present in current floor
+     *
+     * @param name user to search
+     * @return present or not
+     */
+    private boolean isUserInFloor(String name) {
+        for (Room room : LDCDViewer.instance.currentFloor.getFloorRooms())
+            if (room.isNormal())
+                for (ComputerHost s : room.getHostList())
+                    for (String x : s.getUsers())
+                        if (x.equals(name))
+                            return true;
+        return false;
     }
 
     /**
@@ -275,5 +314,20 @@ public class BuildingRenderer {
     public void handleScroll(ScrollEvent event) {
         if (LDCDViewer.instance.currentRoom != null)
             this.roomRenderer.handleScroll(event);
+    }
+
+    public List<String> getSearchResult() {
+        List<String> result = new ArrayList<>();
+
+        if (text.isEmpty())
+            return result;
+
+        for (String x : LDCDViewer.instance.users) {
+            if (x.toLowerCase().contains(text.toLowerCase())) {
+                result.add(x);
+            }
+        }
+
+        return result;
     }
 }
