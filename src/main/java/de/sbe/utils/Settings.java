@@ -3,15 +3,12 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.logging.Execution;
 import de.sbe.utils.logging.LogUtils;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Settings {
@@ -21,7 +18,6 @@ public abstract class Settings {
     public static final Pattern DELIMITER_PATTERN = Pattern.compile("\\s*,\\s*|\\s+");
     private static final Properties PROPERTIES = new Properties();
 
-    @Execution
     public static boolean getBoolean(String _key) {
         if (PROPERTIES.containsKey(_key)) {
             return BOOLEAN_TRUE_PATTERN.matcher(Settings.getString(_key).trim()).matches();
@@ -33,7 +29,6 @@ public abstract class Settings {
         return Settings.getDouble(_key, Double.MIN_VALUE);
     }
 
-    @Execution
     public static double getDouble(String _key, double _default) {
         double result = _default;
         if (PROPERTIES.containsKey(_key)) {
@@ -47,7 +42,6 @@ public abstract class Settings {
         return result;
     }
 
-    @Execution
     public static Double[] getDoubles(String _key) {
         ArrayList<Double> result;
         result = new ArrayList<Double>();
@@ -73,7 +67,6 @@ public abstract class Settings {
         return Settings.getFloat(_key, Float.MIN_VALUE);
     }
 
-    @Execution
     public static float getFloat(String _key, float _default) {
         float result = _default;
         if (PROPERTIES.containsKey(_key)) {
@@ -87,7 +80,6 @@ public abstract class Settings {
         return result;
     }
 
-    @Execution
     public static Float[] getFloats(String _key) {
         ArrayList<Float> result;
         result = new ArrayList<Float>();
@@ -113,7 +105,6 @@ public abstract class Settings {
         return Settings.getInt(_key, Integer.MIN_VALUE);
     }
 
-    @Execution
     public static int getInt(String _key, int _default) {
         int result = _default;
         if (PROPERTIES.containsKey(_key)) {
@@ -127,7 +118,6 @@ public abstract class Settings {
         return result;
     }
 
-    @Execution
     public static Integer[] getInts(String _key) {
         ArrayList<Integer> result;
         result = new ArrayList<Integer>();
@@ -153,7 +143,6 @@ public abstract class Settings {
         return Settings.getLong(_key, Long.MIN_VALUE);
     }
 
-    @Execution
     public static long getLong(String _key, long _default) {
         long result = _default;
         if (PROPERTIES.containsKey(_key)) {
@@ -167,7 +156,6 @@ public abstract class Settings {
         return result;
     }
 
-    @Execution
     public static Long[] getLongs(String _key) {
         ArrayList<Long> result;
         result = new ArrayList<Long>();
@@ -189,17 +177,14 @@ public abstract class Settings {
         return result.toArray(new Long[result.size()]);
     }
 
-    @Execution
     public static String getString(String _key) {
         return Settings.getString(_key, "");
     }
 
-    @Execution
     public static String getString(String _key, String _default) {
         return PROPERTIES.containsKey(_key) ? PROPERTIES.getProperty(_key) : _default;
     }
 
-    @Execution
     public static void set(String _key, Object _value) {
         PROPERTIES.setProperty(_key, _value != null ? _value.toString() : "");
     }

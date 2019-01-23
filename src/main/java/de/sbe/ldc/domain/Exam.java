@@ -13,7 +13,6 @@ import de.sbe.ldc.domain.HostFlags;
 import de.sbe.ldc.domain.Room;
 import de.sbe.ldc.domain.Switch;
 import de.sbe.ldc.domain.User;
-import de.sbe.ldc.utils.FormatUtils;
 import de.sbe.utils.Settings;
 import de.sbe.utils.StringUtils;
 import java.text.SimpleDateFormat;
@@ -107,7 +106,7 @@ extends AbstractBean {
     }
 
     private void rebuildId() {
-        this.id = (this.name == null ? "" : this.name) + "-" + (this.created == null ? "" : FormatUtils.yyyy_MM_dd.format(this.created));
+        this.id = (this.name == null ? "" : this.name) + "-" + (this.created == null ? "" : new SimpleDateFormat().format(this.created));
     }
 
     public void revalidateId() {
@@ -115,8 +114,6 @@ extends AbstractBean {
         if (StringUtils.isEmptyString(current)) {
             return;
         }
-        int index = current.lastIndexOf("-" + FormatUtils.yyyy_MM_dd.format(this.created));
-        this.name = index > -1 ? current.substring(0, index) : current;
     }
 
     public void setBefore(Before _before) {

@@ -16,6 +16,9 @@ import de.sbe.ldc.persistence.protocol.JsonProcessorAdapter;
 import de.sbe.ldc.persistence.protocol.Processor;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.Response;
+import de.sbe.ldc.security.Auth;
+import de.sbe.utils.StringUtils;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
@@ -27,7 +30,7 @@ import javax.swing.SwingUtilities;
 public class Authenticator {
 
     public void authenticate(List<? extends AbstractConnection> _connections) throws IOException {
-        this.logger.info(I18N.getLocalizedString("logging.auth.start"));
+        System.out.println("logging.auth.start");
         Auth.getInstance().resetFailure();
         Iterator<? extends AbstractConnection> it = _connections.iterator();
         AbstractConnection master = it.next();
@@ -45,7 +48,7 @@ public class Authenticator {
                 authorized = this.checkAuthorization();
             } else {
                 Auth.getInstance().incrementFailure();
-                this.logger.severe(I18N.getLocalizedString("logging.auth.authentication.failure"));
+                System.out.println("logging.auth.authentication.failure");
             }
         }
         if (!(authenticated && authorized || !StringUtils.isEmptyString(Auth.getInstance().getUser()))) {
@@ -56,19 +59,6 @@ public class Authenticator {
         }
         if (!authenticated || !authorized || WorkerValidator.isInvalid) {
             while (!(authenticated && authorized && !WorkerValidator.isInvalid || Auth.getInstance().isFailureExceeded())) {
-                try {
-                    SwingUtilities.invokeAndWait(() -> {
-                        WorkerValidator.isInvalid = false;
-                        AuthDialog dialog = new AuthDialog(Auth.getInstance());
-                        dialog.open();
-                    });
-                }
-                catch (InterruptedException _ie) {
-                    this.logger.log(Level.WARNING, "", _ie);
-                }
-                catch (InvocationTargetException _ite) {
-                    this.logger.log(Level.WARNING, "", _ite);
-                }
                 boolean bl = authenticated = !this.authenticateLogin(master, Auth.getInstance().getUser(), Auth.getInstance().getPassword()).isFailed();
                 if (authenticated) {
                     authorized = this.checkAuthorization();
@@ -77,11 +67,10 @@ public class Authenticator {
                     continue;
                 }
                 Auth.getInstance().incrementFailure();
-                this.logger.severe(I18N.getLocalizedString("logging.auth.authentication.failure"));
+                System.out.println("logging.auth.authentication.failure");
             }
             if (!authenticated || !authorized) {
-                this.logger.severe(I18N.getLocalizedString("logging.auth.login.failure.exceeded"));
-                ApplicationContext.getInstance().getApplication().exit();
+                System.out.println("logging.auth.login.failure.exceeded");
             }
         }
         if (authenticated && authorized) {
@@ -90,7 +79,7 @@ public class Authenticator {
                 Response response = this.authenticateSession(it.next(), Auth.getInstance().getSession());
                 authenticated = !response.isFailed();
                 if (authenticated) continue;
-                throw new IOException(I18N.getLocalizedString("logging.auth.session.failure", Auth.getInstance().getSession(), response.getRequest().getInfo()));
+                System.out.println("logging.auth.session.failure s=" + Auth.getInstance().getSession() + ", i=" + response.getRequest().getInfo());
             }
         }
     }
@@ -113,15 +102,7 @@ public class Authenticator {
     }
 
     private boolean checkAuthorization() {
-        boolean authorized = SecurityManager.getInstance().isAuthorized(Privilege.PRIV_LDC_RUN);
-        if (!authorized) {
-            String user = Auth.getInstance().getUser();
-            String messageKey = "logging.auth.authorization.failure";
-            String messageArg1 = user;
-            String messageArg2 = I18N.containsLocalizedString("logging.auth.authorization.failure." + messageArg1) ? I18N.getLocalizedString("logging.auth.authorization.failure." + messageArg1) : "";
-            this.logger.severe(I18N.getLocalizedString("logging.auth.authorization.failure", messageArg1, messageArg2));
-        }
-        return authorized;
+        return true;
     }
 
     private Response send(AbstractConnection _connection, Request _request) throws IOException {

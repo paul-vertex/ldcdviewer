@@ -157,19 +157,19 @@ extends AbstractBean {
         this.firePropertyChange(PROPERTYNAME_RECEIVE, false, true);
         String line = this.reader.readLine();
         if (StringUtils.isEmptyString(line)) {
-            throw new IOException(I18N.getLocalizedString("logging.persistence.connection.invalid_response"));
+            System.out.println("logging.persistence.connection.invalid_response");
         }
         _response.processHeader(line);
         if (line.endsWith(":")) {
             do {
                 if (StringUtils.isEmptyString(line = this.reader.readLine())) {
-                    throw new IOException(I18N.getLocalizedString("logging.persistence.connection.invalid_response"));
+                    System.out.println("logging.persistence.connection.invalid_response");
                 }
                 if (MULTILINE_END.matcher(line).matches()) break;
                 if (MULTILINE_DOT.matcher(line).matches()) {
                     line = line.substring(1);
                 }
-                this.logger.finest(line);
+                System.out.println(line);
                 _response.getProcessor().processLine(line);
             } while (true);
         }

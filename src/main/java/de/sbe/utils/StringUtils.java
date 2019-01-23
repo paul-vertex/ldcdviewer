@@ -3,8 +3,6 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.StringConverter;
-import de.sbe.utils.logging.Execution;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public abstract class StringUtils {
     public static final String SQUARED_BRACKET_OPEN = "[";
     public static final String UNDERSCORE = "_";
 
-    @Execution
     public static <T> List<String> convert(List<T> _list) {
         return StringUtils.convert(_list, new StringConverter<T>(){
 
@@ -45,7 +42,6 @@ public abstract class StringUtils {
         });
     }
 
-    @Execution
     public static <T> List<String> convert(List<T> _list, StringConverter<T> _converter) {
         ArrayList<String> list = new ArrayList<String>(_list.size());
         for (T obj : _list) {
@@ -54,12 +50,10 @@ public abstract class StringUtils {
         return list;
     }
 
-    @Execution
     public static boolean isEmptyString(String _text) {
         return _text == null || _text.trim().isEmpty();
     }
 
-    @Execution
     public static <T> String morph(T _t) {
         return StringUtils.morph(_t, new StringConverter<T>(){
 
@@ -70,7 +64,6 @@ public abstract class StringUtils {
         });
     }
 
-    @Execution
     public static <T> String morph(T _t, StringConverter<T> _converter) {
         return _converter.convert(_t);
     }

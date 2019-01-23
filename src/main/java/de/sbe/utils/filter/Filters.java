@@ -3,8 +3,6 @@
  */
 package de.sbe.utils.filter;
 
-import de.sbe.utils.filter.Filter;
-import de.sbe.utils.logging.Execution;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class Filters {
-    @Execution
     public static <F> void filter(Collection<F> _collection, Filter<F> _filter) {
         Iterator<F> it = _collection.iterator();
         while (it.hasNext()) {

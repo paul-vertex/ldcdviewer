@@ -35,7 +35,7 @@ extends AbstractConnection {
             this.send(new Request(Command.QUIT));
         }
         catch (Exception _ioe) {
-            this.logger.log(Level.WARNING, "", _ioe);
+            _ioe.printStackTrace();
         }
     }
 
@@ -57,11 +57,11 @@ extends AbstractConnection {
                 ping.putEncodedData("host", DataConnection.this.getServer().getIp());
                 Response response = this.connection.send(ping);
                 if (response.isFailed()) {
-                    DataConnection.this.logger.warning(response.getRequest().getInfo());
+                    System.out.println(response.getRequest().getInfo());
                 }
             }
             catch (Exception _e) {
-                DataConnection.this.logger.log(Level.SEVERE, "", _e);
+                _e.printStackTrace();
                 CommunicationManager.getInstance().refresh();
             }
         }

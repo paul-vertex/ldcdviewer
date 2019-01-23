@@ -16,8 +16,6 @@ import de.sbe.ldc.domain.ssm.SsmAction;
 import de.sbe.ldc.domain.ssm.SsmCloseAction;
 import de.sbe.ldc.domain.ssm.SsmEntry;
 import de.sbe.ldc.domain.ssm.SsmForwardAction;
-import de.sbe.ldc.resources.I18N;
-import de.sbe.ldc.ui.shared.converter.ImpersonatorConverter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -102,7 +100,7 @@ public class SsmFactory {
         SsmAction action = SsmFactory.createAction();
         action.setCreatorName(_entry.getCreatorName());
         action.setEntry(_entry);
-        action.setSubject(I18N.getLocalizedString("SsmEntryDialog.new_entry", ImpersonatorConverter.convertFromImpersonator(_entry.getCreatorName())));
+        action.setSubject(_entry.getCreatorName().getDisplayName());
         action.setTsCreated(_entry.getTsCreated());
         action.setTsUpdated(_entry.getTsUpdated());
         _entry.addNewAction(action);

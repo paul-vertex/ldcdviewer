@@ -3,7 +3,6 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.logging.Execution;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -16,7 +15,6 @@ public abstract class Localization {
     /*
      * WARNING - Removed try catching itself - possible behaviour change.
      */
-    @Execution
     public static /* varargs */ String getLocalizedString(String _key, Object ... _params) {
         String result;
         result = bundle.containsKey(_key) ? bundle.getString(_key) : "";
@@ -45,7 +43,6 @@ public abstract class Localization {
         return MessageFormat.format(result, params);
     }
 
-    @Execution
     public static /* varargs */ String[] getLocalizedStrings(String ... _keys) {
         String[] columns = new String[_keys.length];
         int i = _keys.length;

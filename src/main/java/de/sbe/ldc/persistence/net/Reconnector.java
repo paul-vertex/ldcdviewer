@@ -10,7 +10,6 @@ import de.sbe.ldc.persistence.net.CommunicationManager;
 import de.sbe.ldc.persistence.net.DataConnection;
 import de.sbe.ldc.persistence.net.TickerConnection;
 import de.sbe.ldc.persistence.net.WorkerExecutor;
-import de.sbe.ldc.resources.I18N;
 import de.sbe.utils.ConcurrentUtils;
 import de.sbe.utils.Settings;
 import de.sbe.utils.logging.LogUtils;
@@ -86,7 +85,7 @@ class Reconnector {
     }
 
     public final void reconnect() throws IOException {
-        this.logger.info(I18N.getLocalizedString("logging.persistence.net.reconnect", CommunicationManager.PREFERRED_SERVER));
+        this.logger.info("logging.persistence.net.reconnect" +  CommunicationManager.PREFERRED_SERVER);
         CommunicationManager.getInstance().setConnected(false);
         this.control();
         CommunicationManager.getInstance().setConnected(true);

@@ -3,7 +3,6 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.logging.Execution;
 import de.sbe.utils.logging.LogUtils;
 import java.io.Closeable;
 import java.io.IOException;
@@ -31,7 +30,6 @@ public abstract class NetUtils {
         return _bytes[0] << 24 | (_bytes[1] & 255) << 16 | (_bytes[2] & 255) << 8 | _bytes[3] & 255;
     }
 
-    @Execution
     public static void closeQuietly(Closeable _closeable) {
         if (_closeable == null) {
             return;
@@ -44,7 +42,6 @@ public abstract class NetUtils {
         }
     }
 
-    @Execution
     public static void closeQuietly(DatagramSocket _socket) {
         if (_socket == null) {
             return;
@@ -57,7 +54,6 @@ public abstract class NetUtils {
         }
     }
 
-    @Execution
     public static void closeQuietly(Socket _socket) {
         if (_socket == null) {
             return;
@@ -70,7 +66,6 @@ public abstract class NetUtils {
         }
     }
 
-    @Execution
     public static String getHostName() {
         String hostName = null;
         try {
@@ -82,7 +77,6 @@ public abstract class NetUtils {
         return hostName;
     }
 
-    @Execution
     public static List<InetAddress> getLocalInetAddresses() {
         Enumeration<NetworkInterface> nis;
         try {

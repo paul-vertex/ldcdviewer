@@ -3,8 +3,6 @@
  */
 package de.sbe.utils.filter;
 
-import de.sbe.utils.filter.Filter;
-import de.sbe.utils.logging.Execution;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +16,6 @@ implements Filter<F> {
         this.filters = Collections.unmodifiableList(Arrays.asList(_filters));
     }
 
-    @Execution
     @Override
     public boolean include(F _obj) {
         boolean include;

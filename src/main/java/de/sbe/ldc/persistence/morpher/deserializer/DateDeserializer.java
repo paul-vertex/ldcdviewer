@@ -13,7 +13,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import de.sbe.ldc.utils.FormatUtils;
 import de.sbe.utils.StringUtils;
 import de.sbe.utils.logging.LogUtils;
 import java.lang.reflect.Type;
@@ -36,19 +35,9 @@ implements JsonDeserializer<Date> {
         if (value.matches("^[0-9]+$")) {
             date = new Date(_json.getAsLong() * 1000L);
         } else if (value.matches("[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{2,4}")) {
-            try {
-                date = FormatUtils.DATE_FORMAT.parse(value);
-            }
-            catch (ParseException _pe) {
-                LogUtils.getLogger(this.getClass()).log(Level.SEVERE, "", _pe);
-            }
+            date = new Date();
         } else if (value.matches("[0-9]{4}/[0-9]{2}/[0-9]{2}\\s+[0-9]{2}:[0-9]{2}:[0-9]{2}")) {
-            try {
-                date = FormatUtils.NORMAN_DATE_TIME_FORMAT.parse(value.trim().replaceAll("\\s+", " "));
-            }
-            catch (ParseException _pe) {
-                LogUtils.getLogger(this.getClass()).log(Level.SEVERE, "", _pe);
-            }
+            date = new Date();
         }
         return date;
     }

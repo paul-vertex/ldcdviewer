@@ -9,7 +9,6 @@ import de.sbe.ldc.domain.Host;
 import de.sbe.ldc.domain.Room;
 import de.sbe.ldc.domain.User;
 import de.sbe.ldc.domain.repository.RepositoryContext;
-import de.sbe.ldc.security.Auth;
 import de.sbe.utils.NetUtils;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -46,15 +45,6 @@ extends AbstractBean {
     }
 
     private void bind() {
-        Auth.getInstance().addPropertyChangeListener(PROPERTYNAME_THIS_USER, new PropertyChangeListener(){
-
-            @Override
-            public void propertyChange(PropertyChangeEvent _evt) {
-                if (RepositoryContext.getDefaultUsers().isLoaded()) {
-                    Session.this.setThisUser((User)RepositoryContext.getDefaultUsers().getById(Auth.getInstance().getUser()));
-                }
-            }
-        });
         RepositoryContext.getDefaultHosts().addPropertyChangeListener("loaded", new PropertyChangeListener(){
 
             @Override
@@ -98,13 +88,6 @@ extends AbstractBean {
                     Session.this.setSelectedRooms(Collections.singletonList(room));
                     break;
                 }
-            }
-        });
-        RepositoryContext.getDefaultUsers().addPropertyChangeListener("loaded", new PropertyChangeListener(){
-
-            @Override
-            public void propertyChange(PropertyChangeEvent _evt) {
-                Session.this.setThisUser((User)RepositoryContext.getDefaultUsers().getById(Auth.getInstance().getUser()));
             }
         });
     }

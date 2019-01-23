@@ -9,7 +9,6 @@ import de.sbe.ldc.domain.Inventory;
 import de.sbe.ldc.domain.Power;
 import de.sbe.ldc.domain.User;
 import de.sbe.ldc.domain.comparator.UserComparator;
-import de.sbe.ldc.utils.logging.SetterLogger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,7 +44,6 @@ extends HostFlags {
     private Power power = Power.OFF;
     private int ssm;
     private long uptime;
-    @SetterLogger
     private Set<User> users;
 
     HostInfo() {

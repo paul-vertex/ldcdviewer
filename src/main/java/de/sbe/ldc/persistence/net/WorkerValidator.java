@@ -7,7 +7,6 @@ import de.sbe.ldc.persistence.net.CommunicationManager;
 import de.sbe.ldc.persistence.net.Worker;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.Response;
-import de.sbe.ldc.resources.I18N;
 import de.sbe.utils.ConcurrentUtils;
 import de.sbe.utils.logging.LogUtils;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +23,7 @@ public class WorkerValidator {
             response = (Response)_worker.get();
             if (response.isFailed()) {
                 if (Request.RequestStatus.AUTH.equals((Object)response.getRequest().getStatus())) {
-                    LogUtils.getLogger(response.getClass()).severe(I18N.getLocalizedString("logging.auth.insufficient_user_privileges"));
+                    LogUtils.getLogger(response.getClass()).severe("logging.auth.insufficient_user_privileges");
                     isInvalid = true;
                     ConcurrentUtils.submit(() -> CommunicationManager.getInstance().refresh());
                 } else {

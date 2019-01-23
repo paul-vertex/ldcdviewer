@@ -24,7 +24,6 @@ import de.sbe.ldc.persistence.protocol.Processor;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.Response;
 import de.sbe.ldc.persistence.sync.DataLoader;
-import de.sbe.ldc.security.Auth;
 import de.sbe.utils.Settings;
 import de.sbe.utils.logging.LogUtils;
 import java.io.IOException;
@@ -152,9 +151,9 @@ implements ExitListener {
             Authenticator auth = new Authenticator();
             for (DataConnection connection : this.getDatas()) {
                 try {
-                    auth.authenticateSession(connection, Auth.getInstance().getSession());
+                    //auth.authenticateSession(connection, Auth.getInstance().getSession());
                 }
-                catch (IOException _ioe) {
+                catch (Exception _ioe) {
                     LogUtils.getLogger(this.getClass()).log(Level.SEVERE, "", _ioe);
                     break;
                 }
@@ -173,8 +172,7 @@ implements ExitListener {
      * WARNING - Removed try catching itself - possible behaviour change.
      */
     public final Worker request(Request _request, Processor _processor) {
-        Worker worker;
-        worker = new Worker(_request, _processor);
+        Worker worker = new Worker(_request, _processor);
         this.getLock().lock();
         try {
             this.workers.offer(worker);

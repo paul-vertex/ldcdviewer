@@ -53,10 +53,10 @@ class TickerConnection
                         System.out.println("???");
                         continue;
                     }
-                    TickerConnection.this.logger.fine(line);
+                    System.out.println(line);
                     this.processor.processLine(line);
                 } catch (Exception _e) {
-                    TickerConnection.this.logger.log(Level.SEVERE, "", _e);
+                    _e.printStackTrace();
                     CommunicationManager.getInstance().refresh();
                 } finally {
                     TickerConnection.this.getLock().unlock();

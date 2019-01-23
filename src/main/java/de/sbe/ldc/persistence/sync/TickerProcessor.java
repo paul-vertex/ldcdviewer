@@ -29,7 +29,6 @@ import de.sbe.ldc.domain.UserInfo;
 import de.sbe.ldc.domain.repository.RepositoryContext;
 import de.sbe.ldc.persistence.protocol.JsonProcessorAdapter;
 import de.sbe.ldc.persistence.sync.DataLoader;
-import de.sbe.ldc.resources.I18N;
 import de.sbe.utils.ConcurrentUtils;
 import de.sbe.utils.StringUtils;
 import java.beans.PropertyChangeEvent;
@@ -71,7 +70,7 @@ extends JsonProcessorAdapter {
 
     @Override
     public String getDescription() {
-        return I18N.getLocalizedString("view.progress.state_get");
+        return "view.progress.state_get";
     }
 
     @Override
@@ -132,18 +131,18 @@ extends JsonProcessorAdapter {
         private void processTypeHost(JsonObject _object) {
             JsonElement id = _object.get(TickerProcessor.PROPERTY_ID.toLowerCase());
             if (id == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.id_missing", new Object[]{_object, id}));
+                System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
             Host host = (Host)RepositoryContext.getDefaultHosts().getById(id.getAsString());
             if (host == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.object_missing", new Object[]{id}));
+                System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
             }
             JsonElement state = _object.get(TickerProcessor.PROPERTY_STATE.toLowerCase());
             JsonElement stateId = _object.get(TickerProcessor.PROPERTY_STATE_ID.toLowerCase());
             if (stateId == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
                 return;
             }
             if ("agentVersion".equalsIgnoreCase(stateId.getAsString())) {
@@ -271,7 +270,7 @@ extends JsonProcessorAdapter {
                         host.getHostInfo().setUsers(Collections.singleton(user));
                     }
                 } else {
-                    TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                    System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
                     host.getHostInfo().setUsers(null);
                 }
             } else if ("webfilter".equalsIgnoreCase(stateId.getAsString())) {
@@ -283,25 +282,25 @@ extends JsonProcessorAdapter {
                     host.getHostInfo().setWebfilter(Switch.forString(value));
                 }
             } else {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
             }
         }
 
         private void processTypeRoom(JsonObject _object) {
             JsonElement id = _object.get(TickerProcessor.PROPERTY_ID.toLowerCase());
             if (id == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.id_missing", new Object[]{_object, id}));
+                System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
             Room room = (Room)RepositoryContext.getDefaultRooms().getById(id.getAsString());
             if (room == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.object_missing", new Object[]{id}));
+                System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
             }
             JsonElement state = _object.get(TickerProcessor.PROPERTY_STATE.toLowerCase());
             JsonElement stateId = _object.get(TickerProcessor.PROPERTY_STATE_ID.toLowerCase());
             if (stateId == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
                 return;
             }
             if ("exam".equalsIgnoreCase(stateId.getAsString())) {
@@ -375,25 +374,25 @@ extends JsonProcessorAdapter {
                     room.getRoomInfo().setUsb(Switch.forString(value));
                 }
             } else {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
             }
         }
 
         private void processTypeUser(JsonObject _object) {
             JsonElement id = _object.get(TickerProcessor.PROPERTY_ID.toLowerCase());
             if (id == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.id_missing", new Object[]{_object, id}));
+                System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
             User user = (User)RepositoryContext.getDefaultUsers().getById(id.getAsString());
             if (user == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.object_missing", new Object[]{id}));
+                System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
             }
             JsonElement state = _object.get(TickerProcessor.PROPERTY_STATE.toLowerCase());
             JsonElement stateId = _object.get(TickerProcessor.PROPERTY_STATE_ID.toLowerCase());
             if (stateId == null) {
-                TickerProcessor.this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.ticker.unknown_state", new Object[]{_object}));
+                System.out.println("logging.persistence.sync.ticker.unknown_state" + _object);
                 return;
             }
             if ("ssm".equalsIgnoreCase(stateId.getAsString())) {

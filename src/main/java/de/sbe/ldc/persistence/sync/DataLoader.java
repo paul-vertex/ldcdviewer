@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0.139.
- * 
+ *
  * Could not load the following classes:
  *  com.google.gson.FieldNamingStrategy
  *  com.google.gson.Gson
@@ -83,6 +83,8 @@ import de.sbe.ldc.persistence.protocol.Command;
 import de.sbe.ldc.persistence.protocol.JsonProcessorAdapter;
 import de.sbe.ldc.persistence.protocol.Processor;
 import de.sbe.ldc.persistence.protocol.Request;
+import de.sbe.utils.StringUtils;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
@@ -98,15 +100,15 @@ import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 public class DataLoader
-extends AbstractBean {
+        extends AbstractBean {
     private static final DataLoader instance = new DataLoader();
     public static final String PROPERTYNAME_LOADED = "loaded";
     private static final long serialVersionUID = 1L;
 
     public static GsonBuilder buildContactDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.registerTypeAdapter(GenderType.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Impersonator.class, (Object)new InstanceCreator<Impersonator>(){
+        builder.registerTypeAdapter(GenderType.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Impersonator.class, (Object) new InstanceCreator<Impersonator>() {
 
             public Impersonator createInstance(Type _type) {
                 return null;
@@ -117,43 +119,43 @@ extends AbstractBean {
 
     public static GsonBuilder buildDefaultDeserializer() {
         GsonBuilder builder = new GsonBuilder();
-        builder.setFieldNamingStrategy(new FieldNamingStrategy(){
+        builder.setFieldNamingStrategy(new FieldNamingStrategy() {
 
             public String translateName(Field _f) {
                 return SerializableProperties.getSerializedName(_f);
             }
         });
-        builder.registerTypeAdapter(Collection.class, (Object)new CollectionDeserializer());
-        builder.registerTypeAdapter(Date.class, (Object)new DateDeserializer());
-        builder.registerTypeAdapter(List.class, (Object)new CollectionDeserializer());
-        builder.registerTypeAdapter(Queue.class, (Object)new CollectionDeserializer());
+        builder.registerTypeAdapter(Collection.class, (Object) new CollectionDeserializer());
+        builder.registerTypeAdapter(Date.class, (Object) new DateDeserializer());
+        builder.registerTypeAdapter(List.class, (Object) new CollectionDeserializer());
+        builder.registerTypeAdapter(Queue.class, (Object) new CollectionDeserializer());
         return builder;
     }
 
     public static GsonBuilder buildDsbInfoDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.registerTypeAdapter(Group.class, (Object)new GroupDeserializer(_context.getGroups()));
-        builder.registerTypeAdapter(User.class, (Object)new UserDeserializer(_context.getUsers()));
+        builder.registerTypeAdapter(Group.class, (Object) new GroupDeserializer(_context.getGroups()));
+        builder.registerTypeAdapter(User.class, (Object) new UserDeserializer(_context.getUsers()));
         return builder;
     }
 
     public static GsonBuilder buildExamDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildUserDeserializer(_context);
-        builder.registerTypeAdapter(Switch.class, (Object)new EnumDeserializer());
+        builder.registerTypeAdapter(Switch.class, (Object) new EnumDeserializer());
         return builder;
     }
 
     public static GsonBuilder buildGroupDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.registerTypeAdapter(Clopen.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Quota.class, (Object)new QuotaDeserializer());
-        builder.registerTypeAdapter(User.class, (Object)new UserDeserializer(_context.getUsers()));
+        builder.registerTypeAdapter(Clopen.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Quota.class, (Object) new QuotaDeserializer());
+        builder.registerTypeAdapter(User.class, (Object) new UserDeserializer(_context.getUsers()));
         return builder;
     }
 
     public static GsonBuilder buildHostDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.registerTypeAdapter(Host.HostType.class, (Object)new EnumDeserializer());
+        builder.registerTypeAdapter(Host.HostType.class, (Object) new EnumDeserializer());
         return builder;
     }
 
@@ -164,21 +166,21 @@ extends AbstractBean {
 
     public static GsonBuilder buildRoomDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildHostDeserializer(_context);
-        builder.registerTypeAdapter(Host.class, (Object)new HostDeserializer(_context.getHosts()));
-        builder.registerTypeAdapter(RoomLayout.class, (Object)new RoomLayoutDeserializer());
+        builder.registerTypeAdapter(Host.class, (Object) new HostDeserializer(_context.getHosts()));
+        builder.registerTypeAdapter(RoomLayout.class, (Object) new RoomLayoutDeserializer());
         return builder;
     }
 
     public static GsonBuilder buildSurfingDeserializer() {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Date.class, (Object)new DateFromLongDeserializer());
-        builder.registerTypeAdapter(User.class, (Object)new UserDeserializer(RepositoryContext.getDefaultUsers()));
+        builder.registerTypeAdapter(Date.class, (Object) new DateFromLongDeserializer());
+        builder.registerTypeAdapter(User.class, (Object) new UserDeserializer(RepositoryContext.getDefaultUsers()));
         return builder;
     }
 
     public static GsonBuilder buildUrlFilterDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.setFieldNamingStrategy(new FieldNamingStrategy(){
+        builder.setFieldNamingStrategy(new FieldNamingStrategy() {
 
             public String translateName(Field _f) {
                 return _f.getName().equals("sitesEnabled") ? "sites_enabled" : (_f.getName().equals("urlsEnabled") ? "urls_enabled" : _f.getName());
@@ -189,25 +191,25 @@ extends AbstractBean {
 
     public static GsonBuilder buildUserDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildGroupDeserializer(_context);
-        builder.registerTypeAdapter(GenderType.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Group.class, (Object)new GroupDeserializer(_context.getGroups()));
-        builder.registerTypeAdapter(Option.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Pykota.PykotaLimitBy.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Quota.class, (Object)new QuotaDeserializer());
-        builder.registerTypeAdapter(Role.class, (Object)new RoleDeserializer(_context.getRoles()));
-        builder.registerTypeAdapter(ZarafaEntity.class, (Object)new ZarafaEntityDeserializer());
+        builder.registerTypeAdapter(GenderType.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Group.class, (Object) new GroupDeserializer(_context.getGroups()));
+        builder.registerTypeAdapter(Option.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Pykota.PykotaLimitBy.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Quota.class, (Object) new QuotaDeserializer());
+        builder.registerTypeAdapter(Role.class, (Object) new RoleDeserializer(_context.getRoles()));
+        builder.registerTypeAdapter(ZarafaEntity.class, (Object) new ZarafaEntityDeserializer());
         return builder;
     }
 
     public static GsonBuilder buildUserListDeserializer(RepositoryContext _context) {
         GsonBuilder builder = DataLoader.buildDefaultDeserializer();
-        builder.registerTypeAdapter(UserList.Column.class, (Object)new ColumnDeserializer());
-        builder.registerTypeAdapter(UserList.Column.ColumnType.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(UserList.FileType.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Option.class, (Object)new EnumDeserializer());
-        builder.registerTypeAdapter(Quota.class, (Object)new QuotaDeserializer());
-        builder.registerTypeAdapter(Role.class, (Object)new RoleDeserializer(_context.getRoles()));
-        builder.registerTypeAdapter(ZarafaEntity.class, (Object)new ZarafaEntityDeserializer());
+        builder.registerTypeAdapter(UserList.Column.class, (Object) new ColumnDeserializer());
+        builder.registerTypeAdapter(UserList.Column.ColumnType.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(UserList.FileType.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Option.class, (Object) new EnumDeserializer());
+        builder.registerTypeAdapter(Quota.class, (Object) new QuotaDeserializer());
+        builder.registerTypeAdapter(Role.class, (Object) new RoleDeserializer(_context.getRoles()));
+        builder.registerTypeAdapter(ZarafaEntity.class, (Object) new ZarafaEntityDeserializer());
         return builder;
     }
 
@@ -219,7 +221,7 @@ extends AbstractBean {
     }
 
     public AbstractJsonProcessor<User, String> buildUserLoaderProcessor(final RepositoryContext _context) {
-        return new AbstractJsonProcessor<User, String>((AbstractBeanRepository)_context.getUsers()){
+        return new AbstractJsonProcessor<User, String>((AbstractBeanRepository) _context.getUsers()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -228,7 +230,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.user_list");
+                return "view.progress.user_list";
             }
 
             @Override
@@ -278,7 +280,7 @@ extends AbstractBean {
     }
 
     public void loadContacts(final RepositoryContext _context, boolean _clear) {
-        this.load("contact", new AbstractRpcProcessor<Contact>((AbstractBeanRepository)_context.getContacts()){
+        this.load("contact", new AbstractRpcProcessor<Contact>((AbstractBeanRepository) _context.getContacts()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -287,7 +289,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.contact_list");
+                return "view.progress.contact_list";
             }
         }, _clear);
     }
@@ -302,7 +304,7 @@ extends AbstractBean {
     }
 
     public void loadDsbInfos(final RepositoryContext _context, boolean _clear) {
-        this.load(Command.DSB_INFO, new AbstractJsonProcessor<DsbInfo, String>((AbstractBeanRepository)_context.getDsbInfos()){
+        this.load(Command.DSB_INFO, new AbstractJsonProcessor<DsbInfo, String>((AbstractBeanRepository) _context.getDsbInfos()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -311,7 +313,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.dsb_info");
+                return "view.progress.dsb_info";
             }
         }, _clear);
     }
@@ -321,7 +323,7 @@ extends AbstractBean {
     }
 
     public void loadExams(final RepositoryContext _context, boolean _clear) {
-        this.load(Command.EXAM_LIST, new AbstractJsonProcessor<Exam, String>((AbstractBeanRepository)_context.getExams()){
+        this.load(Command.EXAM_LIST, new AbstractJsonProcessor<Exam, String>((AbstractBeanRepository) _context.getExams()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -330,7 +332,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.exam_list");
+                return "view.progress.exam_list";
             }
 
             @Override
@@ -348,7 +350,7 @@ extends AbstractBean {
     }
 
     public void loadGroups(final RepositoryContext _context, boolean _clear) {
-        this.load(Command.GROUP_LIST, "attrs=diskquota", new AbstractJsonProcessor<Group, String>((AbstractBeanRepository)_context.getGroups()){
+        this.load(Command.GROUP_LIST, "attrs=diskquota", new AbstractJsonProcessor<Group, String>((AbstractBeanRepository) _context.getGroups()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -357,7 +359,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.group_list");
+                return "view.progress.group_list";
             }
         }, _clear);
     }
@@ -367,8 +369,7 @@ extends AbstractBean {
     }
 
     public void loadHosts(final RepositoryContext _context, boolean _clear) {
-        if (SecurityManager.getInstance().isAuthorized(Privilege.PRIV_HOST_LIST)) {
-            this.load(Command.HOST_LIST, new AbstractJsonProcessor<Host, String>((AbstractBeanRepository)_context.getHosts()){
+            this.load(Command.HOST_LIST, new AbstractJsonProcessor<Host, String>((AbstractBeanRepository) _context.getHosts()) {
 
                 @Override
                 protected GsonBuilder buildGsonBuilder() {
@@ -377,10 +378,9 @@ extends AbstractBean {
 
                 @Override
                 public String getDescription() {
-                    return I18N.getLocalizedString("view.progress.host_list");
+                    return "view.progress.host_list";
                 }
             }, _clear);
-        }
     }
 
     public void loadInventory() {
@@ -388,33 +388,6 @@ extends AbstractBean {
     }
 
     public void loadInventory(final RepositoryContext _context) {
-        ProgressTask.process(new SwingWorker<Void, Void>(){
-
-            @Override
-            protected Void doInBackground() throws Exception {
-                GsonBuilder builder = new GsonBuilder();
-                final Gson gson = builder.create();
-                WorkerValidator validator = new WorkerValidator();
-                for (int i = 0; i < _context.getHosts().getBeans().size(); ++i) {
-                    final Host host = (Host)_context.getHosts().getBeans().get(i);
-                    this.setProgress(i * 100 / _context.getHosts().getBeans().size());
-                    host.getHostInfo().getInventory().getContent().clear();
-                    if (host.getCn() == null || host.getCn().endsWith("$")) continue;
-                    Request request = new Request(Command.OBJECT_DEVICE_GET_INVENTORY);
-                    request.putEncodedData("dn", host.getDn());
-                    validator.validate(CommunicationManager.getInstance().request(request, new JsonProcessorAdapter(){
-
-                        @Override
-                        public void processJson(JsonObject _object) {
-                            Inventory.Value entry = (Inventory.Value)gson.fromJson((JsonElement)_object, Inventory.Value.class);
-                            host.getHostInfo().getInventory().putEntry(entry);
-                        }
-                    }));
-                }
-                return null;
-            }
-
-        });
     }
 
     public void loadInventoryMap(final InventoryMap _imap) {
@@ -422,11 +395,11 @@ extends AbstractBean {
         final Gson gson = builder.create();
         WorkerValidator validator = new WorkerValidator();
         Request request = new Request(Command.OBJECT_DEVICE_GET_INVENTORY_INFO);
-        validator.validate(CommunicationManager.getInstance().request(request, new JsonProcessorAdapter(){
+        validator.validate(CommunicationManager.getInstance().request(request, new JsonProcessorAdapter() {
 
             @Override
             public void processJson(JsonObject _object) {
-                InventoryMap imap = (InventoryMap)gson.fromJson((JsonElement)_object, InventoryMap.class);
+                InventoryMap imap = (InventoryMap) gson.fromJson((JsonElement) _object, InventoryMap.class);
                 _imap.setColumns(imap.getColumns());
                 _imap.setCollections(imap.getCollections());
             }
@@ -452,7 +425,7 @@ extends AbstractBean {
     }
 
     public void loadRoles(RepositoryContext _context, boolean _clear) {
-        this.load(Command.ROLE_LIST, new AbstractJsonProcessor<Role, String>((AbstractBeanRepository)_context.getRoles()){
+        this.load(Command.ROLE_LIST, new AbstractJsonProcessor<Role, String>((AbstractBeanRepository) _context.getRoles()) {
 
             @Override
             protected GsonBuilder buildGsonBuilder() {
@@ -461,7 +434,7 @@ extends AbstractBean {
 
             @Override
             public String getDescription() {
-                return I18N.getLocalizedString("view.progress.role_list");
+                return "view.progress.role_list";
             }
         }, _clear);
     }
@@ -482,58 +455,56 @@ extends AbstractBean {
     }
 
     public void loadRooms(final RepositoryContext _context, boolean _clear) {
-        if (SecurityManager.getInstance().isAuthorized(Privilege.PRIV_ROOM_LIST)) {
-            this.load(Command.ROOM_LIST, new AbstractJsonProcessor<Room, String>((AbstractBeanRepository)_context.getRooms()){
+        this.load(Command.ROOM_LIST, new AbstractJsonProcessor<Room, String>((AbstractBeanRepository) _context.getRooms()) {
 
-                @Override
-                protected GsonBuilder buildGsonBuilder() {
-                    return DataLoader.buildRoomDeserializer(_context);
-                }
+            @Override
+            protected GsonBuilder buildGsonBuilder() {
+                return DataLoader.buildRoomDeserializer(_context);
+            }
 
-                @Override
-                public String getDescription() {
-                    return I18N.getLocalizedString("view.progress.room_list");
-                }
+            @Override
+            public String getDescription() {
+                return "view.progress.room_list";
+            }
 
-                @Override
-                public void tearDown() {
-                    for (Room room : this.getRepo().getBeans()) {
-                        List<Host> member = room.getMember();
-                        room.setMember(null);
-                        room.setMember(member);
-                        room.getRoomInfo().setInput(Defaults.getInstance().getInput(room));
-                        room.getRoomInfo().setInternet(Defaults.getInstance().getInternet(room));
-                        room.getRoomInfo().setIntranet(Defaults.getInstance().getIntranet(room));
-                        room.getRoomInfo().setPrinter(Defaults.getInstance().getPrinter(room));
-                        room.getRoomInfo().setScreen(Defaults.getInstance().getScreen(room));
-                        room.getRoomInfo().setSwap(Defaults.getInstance().getSwap(room));
-                        room.getRoomInfo().setUsb(Defaults.getInstance().getUsb(room));
-                        room.getRoomInfo().setWebfilter(Defaults.getInstance().getWebfilter(room));
-                        for (Host host : room.getMember()) {
-                            host.getHostInfo().setInput(Defaults.getInstance().getInput(host));
-                            host.getHostInfo().setInternet(Defaults.getInstance().getInternet(host));
-                            host.getHostInfo().setIntranet(Defaults.getInstance().getIntranet(host));
-                            host.getHostInfo().setPrinter(Defaults.getInstance().getPrinter(host));
-                            host.getHostInfo().setScreen(Defaults.getInstance().getScreen(host));
-                            host.getHostInfo().setSwap(Defaults.getInstance().getSwap(host));
-                            host.getHostInfo().setUsb(Defaults.getInstance().getUsb(host));
-                            host.getHostInfo().setWebfilter(Defaults.getInstance().getWebfilter(host));
-                        }
+            @Override
+            public void tearDown() {
+                for (Room room : this.getRepo().getBeans()) {
+                    List<Host> member = room.getMember();
+                    room.setMember(null);
+                    room.setMember(member);
+                    room.getRoomInfo().setInput(Defaults.getInstance().getInput(room));
+                    room.getRoomInfo().setInternet(Defaults.getInstance().getInternet(room));
+                    room.getRoomInfo().setIntranet(Defaults.getInstance().getIntranet(room));
+                    room.getRoomInfo().setPrinter(Defaults.getInstance().getPrinter(room));
+                    room.getRoomInfo().setScreen(Defaults.getInstance().getScreen(room));
+                    room.getRoomInfo().setSwap(Defaults.getInstance().getSwap(room));
+                    room.getRoomInfo().setUsb(Defaults.getInstance().getUsb(room));
+                    room.getRoomInfo().setWebfilter(Defaults.getInstance().getWebfilter(room));
+                    for (Host host : room.getMember()) {
+                        host.getHostInfo().setInput(Defaults.getInstance().getInput(host));
+                        host.getHostInfo().setInternet(Defaults.getInstance().getInternet(host));
+                        host.getHostInfo().setIntranet(Defaults.getInstance().getIntranet(host));
+                        host.getHostInfo().setPrinter(Defaults.getInstance().getPrinter(host));
+                        host.getHostInfo().setScreen(Defaults.getInstance().getScreen(host));
+                        host.getHostInfo().setSwap(Defaults.getInstance().getSwap(host));
+                        host.getHostInfo().setUsb(Defaults.getInstance().getUsb(host));
+                        host.getHostInfo().setWebfilter(Defaults.getInstance().getWebfilter(host));
                     }
-                    super.tearDown();
                 }
-            }, _clear);
-        }
+                super.tearDown();
+            }
+        }, _clear);
     }
 
     public void loadState() {
-        PropertyChangeListener listener = new PropertyChangeListener(){
+        PropertyChangeListener listener = new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent _evt) {
                 Request request = new Request(Command.STATE_GET);
                 new WorkerValidator().validate(CommunicationManager.getInstance().request(request, new TickerProcessor()));
-                RepositoryContext.getDefaultUsers().removePropertyChangeListener(DataLoader.PROPERTYNAME_LOADED, (PropertyChangeListener)this);
+                RepositoryContext.getDefaultUsers().removePropertyChangeListener(DataLoader.PROPERTYNAME_LOADED, (PropertyChangeListener) this);
             }
         };
         RepositoryContext.getDefaultUsers().addPropertyChangeListener(PROPERTYNAME_LOADED, listener);
@@ -563,40 +534,37 @@ extends AbstractBean {
     }
 
     public void loadUserLists(final RepositoryContext _context, boolean _clear) {
-        if (SecurityManager.getInstance().isAuthorized(Privilege.PRIV_USERLIST_LIST)) {
-            this.load(Command.USERLIST_LIST, new AbstractJsonProcessor<UserList, String>((AbstractBeanRepository)_context.getUserLists()){
+        this.load(Command.USERLIST_LIST, new AbstractJsonProcessor<UserList, String>((AbstractBeanRepository) _context.getUserLists()) {
 
-                @Override
-                protected GsonBuilder buildGsonBuilder() {
-                    return DataLoader.buildUserListDeserializer(_context);
-                }
+            @Override
+            protected GsonBuilder buildGsonBuilder() {
+                return DataLoader.buildUserListDeserializer(_context);
+            }
 
-                @Override
-                public String getDescription() {
-                    return I18N.getLocalizedString("view.progress.userlist_list");
-                }
+            @Override
+            public String getDescription() {
+                return "view.progress.userlist_list";
+            }
 
-                @Override
-                public void processLine(String _line) {
-                    this.logger.finest(_line);
-                    try {
-                        int start = _line.indexOf("\"list\":[");
-                        int end = _line.indexOf("]", start);
-                        String list = _line.substring(start + 9, end - 1);
-                        String withoutList = _line.replaceFirst("\"list\":\\[.+?\\],?", "");
-                        JsonElement element = new JsonParser().parse(withoutList);
-                        if (element.isJsonObject()) {
-                            JsonObject object = element.getAsJsonObject();
-                            object.add("list", (JsonElement)new JsonPrimitive(list));
-                            this.processJson(object);
-                        }
+            @Override
+            public void processLine(String _line) {
+                System.out.println(_line);
+                try {
+                    int start = _line.indexOf("\"list\":[");
+                    int end = _line.indexOf("]", start);
+                    String list = _line.substring(start + 9, end - 1);
+                    String withoutList = _line.replaceFirst("\"list\":\\[.+?\\],?", "");
+                    JsonElement element = new JsonParser().parse(withoutList);
+                    if (element.isJsonObject()) {
+                        JsonObject object = element.getAsJsonObject();
+                        object.add("list", (JsonElement) new JsonPrimitive(list));
+                        this.processJson(object);
                     }
-                    catch (JsonParseException _jpe) {
-                        this.logger.log(Level.SEVERE, "", (Throwable)_jpe);
-                    }
+                } catch (JsonParseException _jpe) {
+                    _jpe.printStackTrace();
                 }
-            }, _clear);
-        }
+            }
+        }, _clear);
     }
 
     public void loadUsers() {
@@ -608,32 +576,32 @@ extends AbstractBean {
     }
 
     private static class DefaultsProcessor
-    extends JsonProcessorAdapter {
+            extends JsonProcessorAdapter {
         DefaultsProcessor() {
         }
 
         @Override
         public String getDescription() {
-            return I18N.getLocalizedString("view.progress.state_defaults");
+            return "view.progress.state_defaults";
         }
 
         @Override
         public void processJson(JsonObject _object) {
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(Defaults.class, (Object)new InstanceCreator<Defaults>(){
+            builder.registerTypeAdapter(Defaults.class, (Object) new InstanceCreator<Defaults>() {
 
                 public Defaults createInstance(Type _type) {
                     return Defaults.getInstance();
                 }
             });
-            builder.registerTypeAdapter(Switch.class, (Object)new EnumDeserializer());
-            builder.setFieldNamingStrategy(new FieldNamingStrategy(){
+            builder.registerTypeAdapter(Switch.class, (Object) new EnumDeserializer());
+            builder.setFieldNamingStrategy(new FieldNamingStrategy() {
 
                 public String translateName(Field _f) {
                     return _f.getName().equals("defaults") ? "default" : _f.getName();
                 }
             });
-            builder.create().fromJson((JsonElement)_object, Defaults.class);
+            builder.create().fromJson((JsonElement) _object, Defaults.class);
         }
 
         @Override
@@ -649,7 +617,7 @@ extends AbstractBean {
     }
 
     public static abstract class AbstractRpcProcessor<R extends RpcObject>
-    extends AbstractJsonProcessor<R, Long> {
+            extends AbstractJsonProcessor<R, Long> {
         public AbstractRpcProcessor(AbstractBeanRepository<R, Long> _repo) {
             super(_repo);
         }
@@ -658,22 +626,22 @@ extends AbstractBean {
         protected JsonObject morph(JsonObject _object) {
             JsonObject jo = new JsonObject();
             for (Map.Entry entry : _object.entrySet()) {
-                if (((String)entry.getKey()).equals("attributes")) {
-                    for (Map.Entry scope : ((JsonObject)entry.getValue()).entrySet()) {
-                        for (Map.Entry attribute : ((JsonObject)scope.getValue()).entrySet()) {
-                            jo.add((String)scope.getKey() + "." + (String)attribute.getKey(), (JsonElement)attribute.getValue());
+                if (((String) entry.getKey()).equals("attributes")) {
+                    for (Map.Entry scope : ((JsonObject) entry.getValue()).entrySet()) {
+                        for (Map.Entry attribute : ((JsonObject) scope.getValue()).entrySet()) {
+                            jo.add((String) scope.getKey() + "." + (String) attribute.getKey(), (JsonElement) attribute.getValue());
                         }
                     }
                     continue;
                 }
-                jo.add((String)entry.getKey(), (JsonElement)entry.getValue());
+                jo.add((String) entry.getKey(), (JsonElement) entry.getValue());
             }
             return jo;
         }
     }
 
     public static abstract class AbstractJsonProcessor<B extends JavaBean, T>
-    extends JsonProcessorAdapter {
+            extends JsonProcessorAdapter {
         private GsonBuilder builder;
         private RepositoryInstanceCreator<B, T> creator;
         private Gson gson;
@@ -723,10 +691,8 @@ extends AbstractBean {
             Object id = this.getRepo().getIdClass().equals(Long.class) ? Long.valueOf(elem.getAsLong()) : elem.getAsString();
             this.getCreator().setNextId((T) id);
             try {
-                JavaBean b = (JavaBean)this.getGson().fromJson((JsonElement)jo, this.repo.getBeanClass());
-                this.logger.finest(I18N.getLocalizedString("logging.persistence.sync.object_created", b));
-            }
-            catch (JsonParseException _jpe) {
+                JavaBean b = (JavaBean) this.getGson().fromJson((JsonElement) jo, this.repo.getBeanClass());
+            } catch (JsonParseException _jpe) {
                 _jpe.printStackTrace();
             }
         }
@@ -739,7 +705,7 @@ extends AbstractBean {
         @Override
         public void tearDown() {
             this.repo.setLoaded(true);
-            this.logger.fine(this.getDescription() + (System.currentTimeMillis() - this.startTime) + " ms.");
+            System.out.println(this.getDescription() + (System.currentTimeMillis() - this.startTime) + " ms.");
         }
     }
 

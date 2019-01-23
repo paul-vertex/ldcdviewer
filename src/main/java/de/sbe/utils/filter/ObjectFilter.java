@@ -3,8 +3,6 @@
  */
 package de.sbe.utils.filter;
 
-import de.sbe.utils.filter.Filter;
-import de.sbe.utils.logging.Execution;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,7 +28,6 @@ implements Filter<F> {
         this.add((Collection<F>)Arrays.asList(_fs));
     }
 
-    @Execution
     @Override
     public boolean include(F _obj) {
         return this.objects.contains(_obj);

@@ -17,7 +17,6 @@ import de.sbe.ldc.domain.VPN;
 import de.sbe.ldc.domain.WLAN;
 import de.sbe.ldc.domain.Zarafa;
 import de.sbe.ldc.domain.rpc.Impersonator;
-import de.sbe.ldcd.domain.user.MailForward;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +31,7 @@ Pykota,
 VPN,
 WLAN,
 Zarafa,
-Impersonator,
-MailForward {
+Impersonator {
     public static final List<User> EMPTY_USER_LIST = Collections.emptyList();
     public static final String PROPERTYNAME_BIRTHDAY = "birthday";
     public static final String PROPERTYNAME_CLASSES = "classes";

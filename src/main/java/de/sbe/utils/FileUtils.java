@@ -3,7 +3,6 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.logging.Execution;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.regex.Pattern;
 public abstract class FileUtils {
     public static final File TMP_DIR = new File(System.getProperty("java.io.tmpdir"));
 
-    @Execution
     public static String getRelativePath(File _src, File _relativeTo) throws IOException {
         StringBuilder path = new StringBuilder();
         List<String> src = FileUtils.splitFilePath(_src);

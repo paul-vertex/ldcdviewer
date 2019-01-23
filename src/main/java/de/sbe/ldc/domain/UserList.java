@@ -15,7 +15,6 @@ import de.sbe.ldc.domain.Quota;
 import de.sbe.ldc.domain.Role;
 import de.sbe.ldc.domain.ZarafaEntity;
 import de.sbe.ldc.persistence.morpher.SerializableProperty;
-import de.sbe.ldc.ui.shared.provider.ColumnTypeProvider;
 import de.sbe.utils.logging.LogUtils;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -341,10 +340,6 @@ extends AbstractBean {
             boolean old = this.primaryKey;
             this.primaryKey = _primaryKey;
             this.firePropertyChange(PROPERTYNAME_PRIMARYKEY, old, this.primaryKey);
-        }
-
-        public String toString() {
-            return ColumnTypeProvider.toString(this.columnType) + (this.primaryKey ? " *" : "");
         }
 
         public static enum ColumnType {

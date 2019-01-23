@@ -3,10 +3,8 @@
  */
 package de.sbe.utils;
 
-import de.sbe.utils.logging.Execution;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,7 +39,6 @@ public abstract class ConcurrentUtils {
         return Executors.newSingleThreadScheduledExecutor(ConcurrentUtils.getDefaultThreadFactory());
     }
 
-    @Execution
     public static void submit(Runnable _runnable) {
         ConcurrentUtils.getCachedDaemonThreadPool().submit(_runnable);
     }

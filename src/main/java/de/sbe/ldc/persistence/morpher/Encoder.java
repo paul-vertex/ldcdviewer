@@ -42,10 +42,6 @@ import de.sbe.ldc.persistence.morpher.serializer.RoleSerializer;
 import de.sbe.ldc.persistence.morpher.serializer.RoomSerializer;
 import de.sbe.ldc.persistence.morpher.serializer.UserSerializer;
 import de.sbe.ldc.persistence.morpher.serializer.ZarafaEntitySerializer;
-import de.sbe.ldc.ui.analysis.surfing.By;
-import de.sbe.ldc.ui.analysis.surfing.Epoch;
-import de.sbe.ldc.ui.analysis.surfing.Mimetype;
-import java.lang.reflect.Type;
 import java.util.Date;
 import org.apache.commons.codec.binary.Base64;
 
@@ -63,11 +59,9 @@ public class Encoder {
         builder.registerTypeAdapter(Integer.TYPE, (Object)new IntegerSerializer());
         builder.registerTypeAdapter(Long.class, (Object)new LongSerializer());
         builder.registerTypeAdapter(Long.TYPE, (Object)new LongSerializer());
-        builder.registerTypeAdapter(By.class, new EnumSerializer());
         builder.registerTypeAdapter(Clopen.class, new EnumSerializer());
         builder.registerTypeAdapter(UserList.Column.class, (Object)new ColumnSerializer());
         builder.registerTypeAdapter(Date.class, (Object)new DateSerializer());
-        builder.registerTypeAdapter(Epoch.class, new EnumSerializer());
         builder.registerTypeAdapter(UserList.FileType.class, new EnumSerializer());
         builder.registerTypeAdapter(GenderType.class, new EnumSerializer());
         builder.registerTypeAdapter(Group.class, (Object)new GroupSerializer());
@@ -75,7 +69,6 @@ public class Encoder {
         builder.registerTypeAdapter(Host.class, (Object)new HostSerializer());
         builder.registerTypeAdapter(HostImpl.class, (Object)new HostSerializer());
         builder.registerTypeAdapter(Host.HostType.class, new EnumSerializer());
-        builder.registerTypeAdapter(Mimetype.class, new EnumSerializer());
         builder.registerTypeAdapter(Option.class, new EnumSerializer());
         builder.registerTypeAdapter(Pykota.PykotaLimitBy.class, new EnumSerializer());
         builder.registerTypeAdapter(Quota.class, (Object)new QuotaSerializer());
@@ -84,7 +77,6 @@ public class Encoder {
         builder.registerTypeAdapter(Room.class, (Object)new RoomSerializer());
         builder.registerTypeAdapter(RoomImpl.class, (Object)new RoomSerializer());
         builder.registerTypeAdapter(Switch.class, new EnumSerializer());
-        builder.registerTypeAdapter(de.sbe.ldc.ui.analysis.surfing.Type.class, new EnumSerializer());
         builder.registerTypeAdapter(User.class, (Object)new UserSerializer());
         builder.registerTypeAdapter(ZarafaEntity.class, (Object)new ZarafaEntitySerializer());
         return builder;

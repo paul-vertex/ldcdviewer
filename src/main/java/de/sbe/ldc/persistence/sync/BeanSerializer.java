@@ -46,7 +46,6 @@ import de.sbe.ldc.persistence.protocol.Processor;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.ResponseAction;
 import de.sbe.ldc.persistence.sync.DataLoader;
-import de.sbe.ldc.resources.I18N;
 import de.sbe.utils.StringUtils;
 import de.sbe.utils.filter.AndFilter;
 import de.sbe.utils.filter.Filter;
@@ -169,7 +168,7 @@ implements PropertyChangeListener {
 
     public void commit() {
         if (this.changes.isEmpty()) {
-            this.logger.warning(I18N.getLocalizedString("logging.persistence.sync.partial_empty"));
+            this.logger.warning("logging.persistence.sync.partial_empty");
             return;
         }
         for (PropertyChangeListener listener : STATIC_LISTENER) {
@@ -244,7 +243,6 @@ implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent _evt) {
-        this.logger.log(Level.FINEST, I18N.getLocalizedString("logging.persistence.sync.partial_change", _evt.getSource(), _evt.getPropertyName(), _evt.getOldValue(), _evt.getNewValue()));
         this.changes.add(_evt);
     }
 
