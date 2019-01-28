@@ -1,5 +1,12 @@
 package sh.vertex.ldcdviewer.ui.building;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import de.sbe.ldc.persistence.net.DataConnection;
+import de.sbe.ldc.persistence.protocol.Command;
+import de.sbe.ldc.persistence.protocol.JsonProcessorAdapter;
+import de.sbe.ldc.persistence.protocol.Request;
+import de.sbe.ldc.persistence.protocol.Response;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,6 +23,7 @@ import sh.vertex.ldcdviewer.ui.building.floors.SecondFloor;
 import sh.vertex.ldcdviewer.ui.building.floors.ThirdFloor;
 import sh.vertex.ldcdviewer.util.TextUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,7 +143,7 @@ public class BuildingRenderer {
         /*
             Actual Search
          */
-        List<String> rs = this.getSearchResult();
+        /*List<String> rs = this.getSearchResult();
         int result = rs.size() * 52;
 
         if (rs.size() < 150) {
@@ -151,6 +159,7 @@ public class BuildingRenderer {
                 gc.fillText(name, 1020 / 2 - 190, 505 - result + (i * 52));
             }
         }
+        */
 
 
         /*
@@ -180,6 +189,16 @@ public class BuildingRenderer {
             gc.fillText("Third Floor", 40, 98);
             gc.fillText("Second Floor", 40, 148);
             gc.fillText("First Floor", 40, 198);
+
+            if (LDCDViewer.instance.live) {
+                /* Test Function */
+                gc.setFill(new Color(0.999, 0.525, 0.497, 1f));
+                gc.fillRect(10, 240 , 160, 40);
+                gc.setFill(new Color(1f, 1f, 1f, 1f));
+                gc.setTextAlign(TextAlignment.CENTER);
+                gc.fillText("Test Button", 90, 265);
+                gc.setTextAlign(TextAlignment.LEFT);
+            }
         }
 
         /*
@@ -251,6 +270,24 @@ public class BuildingRenderer {
             }
             if (DisplayUtil.isHovering(180, 0, 1020, 475, event.getX(), event.getY()))
                 menuExpanded = false;
+
+            /*
+                Test Button
+             */
+            if (DisplayUtil.isHovering(10, 240, 170, 280, event.getX(), event.getY())) {
+                if (LDCDViewer.instance.live) {
+                    try {
+                        Response rsp = DataConnection.instance.send(new Request(Command.OBJECT_DEVICE_GET_INVENTORY_INFO), new JsonProcessorAdapter() {
+
+                            @Override
+                            public void processJson(JsonObject _object) {
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         } else {
             if (DisplayUtil.isHovering(980, 498, 996, 514, event.getX(), event.getY())) {
                 LDCDViewer.instance.hostsPerRoom = !LDCDViewer.instance.hostsPerRoom;
@@ -292,6 +329,29 @@ public class BuildingRenderer {
             String typed = TextUtil.filterAllowedCharacters(event.getText());
             this.text += typed;
         }
+
+        long startTime = System.currentTimeMillis();
+        Floor cf = LDCDViewer.instance.currentFloor;
+        for (Room r : cf.getFloorRooms()) {
+            boolean found = false;
+            forward:
+            for (ComputerHost c : r.getHostList()) {
+                for (String un : c.getUsers()) {
+                    for (String s : this.getSearchResult()) {
+                        if (un.substring(3).equals(s)) {
+                            r.saveAndSetSearchRoomState();
+                            found = true;
+                            System.out.println(s);
+                            break forward;
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                r.revertRoomState();
+            }
+        }
+        System.out.println("Took " + (System.currentTimeMillis() - startTime) + "ms to calculate");
     }
 
     /**

@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
-class Reconnector {
+public class Reconnector {
     private final Logger logger = LogUtils.getLogger(this.getClass());
 
-    Reconnector() {
+    public Reconnector() {
     }
 
     private void auth(List<AbstractConnection> _connections) throws IOException {
@@ -85,7 +85,7 @@ class Reconnector {
     }
 
     public final void reconnect() throws IOException {
-        this.logger.info("logging.persistence.net.reconnect" +  CommunicationManager.PREFERRED_SERVER);
+        this.logger.info("logging.persistence.net.reconnect =" +  CommunicationManager.PREFERRED_SERVER);
         CommunicationManager.getInstance().setConnected(false);
         this.control();
         CommunicationManager.getInstance().setConnected(true);

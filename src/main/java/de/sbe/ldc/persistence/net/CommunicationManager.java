@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0.139.
- * 
+ *
  * Could not load the following classes:
  *  com.jgoodies.uif.application.Application
  *  com.jgoodies.uif.application.ApplicationContext
@@ -8,9 +8,6 @@
  */
 package de.sbe.ldc.persistence.net;
 
-import com.jgoodies.uif.application.Application;
-import com.jgoodies.uif.application.ApplicationContext;
-import com.jgoodies.uif.application.ExitListener;
 import de.sbe.ldc.domain.AbstractBean;
 import de.sbe.ldc.domain.Server;
 import de.sbe.ldc.persistence.net.AbstractConnection;
@@ -24,8 +21,10 @@ import de.sbe.ldc.persistence.protocol.Processor;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.Response;
 import de.sbe.ldc.persistence.sync.DataLoader;
+import de.sbe.ldc.security.Auth;
 import de.sbe.utils.Settings;
 import de.sbe.utils.logging.LogUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -38,13 +37,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CommunicationManager
-extends AbstractBean
-implements ExitListener {
+public class CommunicationManager extends AbstractBean {
+
     private static final CommunicationManager instance;
     public static final Server PREFERRED_SERVER;
     public static final String PROPERTYNAME_CONNECTED = "connected";
-    private static final long serialVersionUID = -4131061359322439959L;
     private final Condition condition = this.getLock().newCondition();
     private boolean connected;
     private List<DataConnection> datas = new ArrayList<DataConnection>();
@@ -67,8 +64,7 @@ implements ExitListener {
         this.getLock().lock();
         try {
             allowed = this.workers.isEmpty();
-        }
-        finally {
+        } finally {
             this.getLock().unlock();
         }
         return allowed;
@@ -101,13 +97,11 @@ implements ExitListener {
         do {
             try {
                 new Reconnector().reconnect();
-            }
-            catch (IOException _ioe) {
+            } catch (IOException _ioe) {
                 this.logger.log(Level.SEVERE, "", _ioe);
                 try {
                     Thread.sleep(Settings.getLong("net.reconnect_delay", 1000L));
-                }
-                catch (InterruptedException _ie) {
+                } catch (InterruptedException _ie) {
                     this.logger.log(Level.WARNING, "", _ie);
                 }
                 continue;
@@ -123,8 +117,7 @@ implements ExitListener {
                 return;
             }
             this.refreshInProgress = true;
-        }
-        finally {
+        } finally {
             this.getLock().unlock();
         }
         this.reconnect();
@@ -136,8 +129,7 @@ implements ExitListener {
         this.getLock().lock();
         try {
             this.refreshInProgress = false;
-        }
-        finally {
+        } finally {
             this.getLock().unlock();
         }
     }
@@ -151,15 +143,13 @@ implements ExitListener {
             Authenticator auth = new Authenticator();
             for (DataConnection connection : this.getDatas()) {
                 try {
-                    //auth.authenticateSession(connection, Auth.getInstance().getSession());
-                }
-                catch (Exception _ioe) {
+                    auth.authenticateSession(connection, Auth.getInstance().getSession());
+                } catch (Exception _ioe) {
                     LogUtils.getLogger(this.getClass()).log(Level.SEVERE, "", _ioe);
                     break;
                 }
             }
-        }
-        finally {
+        } finally {
             this.getLock().unlock();
         }
     }
@@ -177,8 +167,7 @@ implements ExitListener {
         try {
             this.workers.offer(worker);
             this.condition.signal();
-        }
-        finally {
+        } finally {
             this.getLock().unlock();
         }
         return worker;
@@ -201,7 +190,6 @@ implements ExitListener {
     static {
         PREFERRED_SERVER = new Server(null, Settings.getString("net.server_host"));
         instance = new CommunicationManager();
-        ApplicationContext.getInstance().getApplication().addExitListener((ExitListener)instance);
     }
 }
 

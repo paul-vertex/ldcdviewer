@@ -245,7 +245,6 @@ implements User {
         return this.initialPassword;
     }
 
-    @Override
     public Collection<String> getLdMailForward() {
         if (this.ldMailForward == null) {
             this.ldMailForward = Collections.singletonList(this.getUid());
@@ -610,7 +609,6 @@ implements User {
         this.firePropertyChange("initialPassword", (Object)old, (Object)this.initialPassword);
     }
 
-    @Override
     public void setLdMailForward(Collection<String> _ldMailForward) {
         this.ldMailForward = _ldMailForward;
         this.firePropertyChange("ldMailForward", this.ldMailForward, this.ldMailForward);

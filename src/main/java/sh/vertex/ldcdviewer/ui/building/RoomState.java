@@ -7,5 +7,6 @@ public enum RoomState {
 
     NORMAL,
     DECO,
-    EXAM;
+    EXAM,
+    SEACH_RESULT;
 }

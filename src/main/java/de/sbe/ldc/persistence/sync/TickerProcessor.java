@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0.139.
- * 
+ *
  * Could not load the following classes:
  *  com.google.gson.Gson
  *  com.google.gson.JsonArray
@@ -31,6 +31,7 @@ import de.sbe.ldc.persistence.protocol.JsonProcessorAdapter;
 import de.sbe.ldc.persistence.sync.DataLoader;
 import de.sbe.utils.ConcurrentUtils;
 import de.sbe.utils.StringUtils;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class TickerProcessor
-extends JsonProcessorAdapter {
+        extends JsonProcessorAdapter {
     public static final Pattern PATTERN_FALSE = Pattern.compile("false|off", 2);
     public static final Pattern PATTERN_TRUE = Pattern.compile("true|on", 2);
     public static final String PROPERTY_HOST = "host";
@@ -58,14 +59,17 @@ extends JsonProcessorAdapter {
     public static final String PROPERTY_TYPE = "type";
     public static final String PROPERTY_USER = "user";
     final Queue<JsonObject> cache = new LinkedBlockingQueue<JsonObject>();
-    final Condition condition = this.lock.newCondition();
-    final ReentrantLock lock = new ReentrantLock();
+    private final Condition condition;
+    private final ReentrantLock lock;
 
     public TickerProcessor() {
+
+        this.lock = new ReentrantLock();
+        this.condition = this.lock.newCondition();
         ConcurrentUtils.newSingleDaemonThreadExecutor().execute(new Worker());
-        RepositoryContext.getDefaultHosts().addPropertyChangeListener("loaded", (PropertyChangeListener)new LoadedHandler());
-        RepositoryContext.getDefaultRooms().addPropertyChangeListener("loaded", (PropertyChangeListener)new LoadedHandler());
-        RepositoryContext.getDefaultUsers().addPropertyChangeListener("loaded", (PropertyChangeListener)new LoadedHandler());
+        RepositoryContext.getDefaultHosts().addPropertyChangeListener("loaded", (PropertyChangeListener) new LoadedHandler());
+        RepositoryContext.getDefaultRooms().addPropertyChangeListener("loaded", (PropertyChangeListener) new LoadedHandler());
+        RepositoryContext.getDefaultUsers().addPropertyChangeListener("loaded", (PropertyChangeListener) new LoadedHandler());
     }
 
     @Override
@@ -82,14 +86,13 @@ extends JsonProcessorAdapter {
         try {
             this.cache.offer(_object);
             this.condition.signal();
-        }
-        finally {
+        } finally {
             this.lock.unlock();
         }
     }
 
     private class Worker
-    extends Thread {
+            extends Thread {
         Worker() {
         }
 
@@ -116,7 +119,7 @@ extends JsonProcessorAdapter {
             if (StringUtils.isEmptyString(this.getDomainName(_uid)) || _hostCn.equalsIgnoreCase(this.getDomainName(_uid))) {
                 user = this.createLocalUser(_uid);
             } else {
-                user = (User)RepositoryContext.getDefaultUsers().getById(this.getUserName(_uid));
+                user = (User) RepositoryContext.getDefaultUsers().getById(this.getUserName(_uid));
                 if (user == null) {
                     user = this.createLocalUser(_uid);
                 }
@@ -134,7 +137,7 @@ extends JsonProcessorAdapter {
                 System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
-            Host host = (Host)RepositoryContext.getDefaultHosts().getById(id.getAsString());
+            Host host = (Host) RepositoryContext.getDefaultHosts().getById(id.getAsString());
             if (host == null) {
                 System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
@@ -149,7 +152,7 @@ extends JsonProcessorAdapter {
                 host.getHostInfo().setAgentVersion(state.getAsString());
             } else if ("exam".equalsIgnoreCase(stateId.getAsString())) {
                 if (state.isJsonObject()) {
-                    host.getHostInfo().setExam((Exam)DataLoader.buildExamDeserializer(RepositoryContext.getInstance()).create().fromJson(state, Exam.class));
+                    host.getHostInfo().setExam((Exam) DataLoader.buildExamDeserializer(RepositoryContext.getInstance()).create().fromJson(state, Exam.class));
                 } else {
                     host.getHostInfo().setExam(null);
                 }
@@ -157,9 +160,9 @@ extends JsonProcessorAdapter {
                 if (state.isJsonObject()) {
                     HashMap<User, Long> idletime = new HashMap<User, Long>();
                     for (Map.Entry entry : state.getAsJsonObject().entrySet()) {
-                        User user = this.getUser(host.getCn(), (String)entry.getKey());
+                        User user = this.getUser(host.getCn(), (String) entry.getKey());
                         if (user == null) continue;
-                        idletime.put(user, ((JsonElement)entry.getValue()).getAsLong());
+                        idletime.put(user, ((JsonElement) entry.getValue()).getAsLong());
                     }
                     host.getHostInfo().setIdletime(idletime.isEmpty() ? null : idletime);
                 } else {
@@ -203,8 +206,7 @@ extends JsonProcessorAdapter {
                 } else {
                     try {
                         host.getHostInfo().setPower(Power.valueOf(state.getAsString().toUpperCase()));
-                    }
-                    catch (IllegalArgumentException _iae) {
+                    } catch (IllegalArgumentException _iae) {
                         host.getHostInfo().setPower(Power.OFF);
                     }
                 }
@@ -226,8 +228,8 @@ extends JsonProcessorAdapter {
                 }
             } else if ("ssm".equalsIgnoreCase(stateId.getAsString())) {
                 for (Map.Entry entry : state.getAsJsonObject().entrySet()) {
-                    if (!((String)entry.getKey()).equalsIgnoreCase("open")) continue;
-                    host.getHostInfo().setSsm(((JsonElement)entry.getValue()).getAsInt());
+                    if (!((String) entry.getKey()).equalsIgnoreCase("open")) continue;
+                    host.getHostInfo().setSsm(((JsonElement) entry.getValue()).getAsInt());
                 }
             } else if ("swap".equalsIgnoreCase(stateId.getAsString())) {
                 String value;
@@ -292,7 +294,7 @@ extends JsonProcessorAdapter {
                 System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
-            Room room = (Room)RepositoryContext.getDefaultRooms().getById(id.getAsString());
+            Room room = (Room) RepositoryContext.getDefaultRooms().getById(id.getAsString());
             if (room == null) {
                 System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
@@ -305,7 +307,7 @@ extends JsonProcessorAdapter {
             }
             if ("exam".equalsIgnoreCase(stateId.getAsString())) {
                 if (state.isJsonObject()) {
-                    room.getRoomInfo().setExam((Exam)DataLoader.buildExamDeserializer(RepositoryContext.getInstance()).create().fromJson(state, Exam.class));
+                    room.getRoomInfo().setExam((Exam) DataLoader.buildExamDeserializer(RepositoryContext.getInstance()).create().fromJson(state, Exam.class));
                 } else {
                     room.getRoomInfo().setExam(null);
                 }
@@ -384,7 +386,7 @@ extends JsonProcessorAdapter {
                 System.out.println("logging.persistence.sync.ticker.id_missing" + _object + ", " + id);
                 return;
             }
-            User user = (User)RepositoryContext.getDefaultUsers().getById(id.getAsString());
+            User user = (User) RepositoryContext.getDefaultUsers().getById(id.getAsString());
             if (user == null) {
                 System.out.println("logging.persistence.sync.ticker.object_missing" + id);
                 return;
@@ -397,8 +399,8 @@ extends JsonProcessorAdapter {
             }
             if ("ssm".equalsIgnoreCase(stateId.getAsString())) {
                 for (Map.Entry entry : state.getAsJsonObject().entrySet()) {
-                    if (!((String)entry.getKey()).equalsIgnoreCase("open")) continue;
-                    user.getUserInfo().setSsm(((JsonElement)entry.getValue()).getAsInt());
+                    if (!((String) entry.getKey()).equalsIgnoreCase("open")) continue;
+                    user.getUserInfo().setSsm(((JsonElement) entry.getValue()).getAsInt());
                 }
             }
         }
@@ -408,40 +410,60 @@ extends JsonProcessorAdapter {
          */
         @Override
         public void run() {
-            // This method has failed to decompile.  When submitting a bug report, please provide this stack trace, and (if you hold appropriate legal rights) the relevant class file.
-            // org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[TRYBLOCK]
-            // org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.processEndingBlocks(Op04StructuredStatement.java:432)
-            // org.benf.cfr.reader.bytecode.analysis.opgraph.Op04StructuredStatement.buildNestedBlocks(Op04StructuredStatement.java:484)
-            // org.benf.cfr.reader.bytecode.analysis.opgraph.Op03SimpleStatement.createInitialStructuredBlock(Op03SimpleStatement.java:607)
-            // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisInner(CodeAnalyser.java:692)
-            // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysisOrWrapFail(CodeAnalyser.java:182)
-            // org.benf.cfr.reader.bytecode.CodeAnalyser.getAnalysis(CodeAnalyser.java:127)
-            // org.benf.cfr.reader.entities.attributes.AttributeCode.analyse(AttributeCode.java:96)
-            // org.benf.cfr.reader.entities.Method.analyse(Method.java:396)
-            // org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:890)
-            // org.benf.cfr.reader.entities.ClassFile.analyseInnerClassesPass1(ClassFile.java:773)
-            // org.benf.cfr.reader.entities.ClassFile.analyseMid(ClassFile.java:870)
-            // org.benf.cfr.reader.entities.ClassFile.analyseTop(ClassFile.java:792)
-            // org.benf.cfr.reader.Driver.doJar(Driver.java:128)
-            // org.benf.cfr.reader.CfrDriverImpl.analyse(CfrDriverImpl.java:63)
-            // org.benf.cfr.reader.Main.main(Main.java:48)
-            throw new IllegalStateException("Decompilation failed");
+            label132:
+            while (!this.isInterrupted()) {
+                try {
+                    lock.lock();
+
+                    try {
+                        if (RepositoryContext.getDefaultHosts().isLoaded() && RepositoryContext.getDefaultRooms().isLoaded() && RepositoryContext.getDefaultUsers().isLoaded() && !cache.isEmpty()) {
+                            while (true) {
+                                    if (cache.isEmpty()) {
+                                        continue label132;
+                                    }
+
+                                    JsonObject _t = (JsonObject) cache.poll();
+                                    System.out.println("JSON GENOMMEN XD " + _t.getAsString());
+                                    JsonElement type = _t.get("type");
+                                    if (type != null && "host".equalsIgnoreCase(type.getAsString())) {
+                                        this.processTypeHost(_t);
+                                    } else if (type != null && "room".equalsIgnoreCase(type.getAsString())) {
+                                        this.processTypeRoom(_t);
+                                    } else if (type != null && "user".equalsIgnoreCase(type.getAsString())) {
+                                        this.processTypeUser(_t);
+                                    } else {
+                                        System.out.println("logging.persistence.sync.ticker.unknown_state " + _t);
+                                    }
+                            }
+                        } else {
+                            try {
+                                condition.await();
+                            } catch (InterruptedException var7) {
+                                System.err.println(var7.toString());
+                            }
+                        }
+                    } finally {
+                        lock.unlock();
+                    }
+                } catch (Throwable var9) {
+                    System.err.println(var9.toString());
+                }
+            }
         }
     }
 
     private class LoadedHandler
-    implements PropertyChangeListener {
+            implements PropertyChangeListener {
         LoadedHandler() {
         }
 
         @Override
         public void propertyChange(PropertyChangeEvent _evt) {
-            if ("loaded".equals(_evt.getPropertyName()) && ((Boolean)_evt.getNewValue()).booleanValue()) {
+            if ("loaded".equals(_evt.getPropertyName()) && ((Boolean) _evt.getNewValue()).booleanValue()) {
                 TickerProcessor.this.lock.lock();
                 try {
                     TickerProcessor.this.condition.signal();
-                }
-                finally {
+                } finally {
                     TickerProcessor.this.lock.unlock();
                 }
             }

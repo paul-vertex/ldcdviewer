@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="560.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sh.vertex.ldcdviewer.ui.LDCDController">
    <children>
       <Label layoutX="300.0" layoutY="67.0" text="LDCD User / Room Viewer">
@@ -22,5 +21,6 @@
       <CheckBox fx:id="remember" layoutX="408.0" layoutY="266.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="Remember Directory?" />
       <Button layoutX="408.0" layoutY="292.0" mnemonicParsing="false" onAction="#loadData" prefHeight="27.0" prefWidth="204.0" text="Load Data" />
       <ProgressBar fx:id="loadProgress" layoutX="408.0" layoutY="330.0" prefHeight="20.0" prefWidth="204.0" progress="0.0" />
+      <Button layoutX="408.0" layoutY="432.0" mnemonicParsing="false" onAction="#useLive" prefHeight="27.0" prefWidth="204.0" text="Just use Live Connection" />
    </children>
 </AnchorPane>

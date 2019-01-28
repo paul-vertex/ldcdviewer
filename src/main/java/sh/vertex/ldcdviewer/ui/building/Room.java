@@ -24,6 +24,8 @@ public class Room {
     private double x, y, w, h;
     private RoomState state;
     private List<ComputerHost> hostList;
+    private boolean isSearchState;
+    private RoomState prevState;
 
     public Room(String roomName, double x, double y, double w, double h, RoomState state) {
         this.hostList = new ArrayList<>();
@@ -64,6 +66,18 @@ public class Room {
                 gc.setFill(new Color(0.965, 0.435, 0.593, 1f));
                 gc.setFont(arial);
                 gc.fillText("E", x + 5, y + h - 7);
+                renderRoomName(gc, mouseX, mouseY);
+                break;
+            case SEACH_RESULT:
+                gc.setStroke(new Color(0.360, 0.733, 1.000, 0.5f));
+                gc.strokeRect(x + 1, y + 1, w - 2, h - 2);
+
+                gc.setFill(new Color(0.338, 0.534, 0.996, 1f));
+                gc.fillRect(x, y, w, h);
+
+                gc.setFill(new Color(0.360, 0.733, 1.000, 1f));
+                gc.setFont(arial);
+                gc.fillText("S", x + 5, y + h - 7);
                 renderRoomName(gc, mouseX, mouseY);
                 break;
             case DECO:
@@ -125,6 +139,21 @@ public class Room {
     }
 
     public boolean isNormal() {
-        return this.getState() == RoomState.NORMAL || this.getState() == RoomState.EXAM;
+        return this.getState() == RoomState.NORMAL || this.getState() == RoomState.EXAM || this.getState() == RoomState.SEACH_RESULT;
+    }
+
+    public void saveAndSetSearchRoomState() {
+        if (!this.isSearchState) {
+            this.isSearchState = true;
+            this.prevState = this.state;
+            this.state = RoomState.SEACH_RESULT;
+        }
+    }
+
+    public void revertRoomState() {
+        if (this.isSearchState) {
+            this.state = this.prevState;
+            this.isSearchState = false;
+        }
     }
 }

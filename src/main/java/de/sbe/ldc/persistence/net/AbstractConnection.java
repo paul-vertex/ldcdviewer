@@ -56,6 +56,10 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import sh.vertex.ldcdviewer.LDCDViewer;
 
 public abstract class AbstractConnection
 extends AbstractBean {
@@ -65,6 +69,7 @@ extends AbstractBean {
     public static final String PROPERTYNAME_RECEIVE = "receive";
     public static final String PROPERTYNAME_TRANSMIT = "transmit";
     private static final long serialVersionUID = 7528602981603085748L;
+    private final JSONParser parser;
     private BufferedReader reader;
     private Server server;
     ServerOptions serverOptions;
@@ -75,6 +80,7 @@ extends AbstractBean {
 
     public AbstractConnection(int _timeout) {
         this.timeout = _timeout;
+        this.parser = new JSONParser();
     }
 
     private void connect() throws IOException {
@@ -157,19 +163,30 @@ extends AbstractBean {
         this.firePropertyChange(PROPERTYNAME_RECEIVE, false, true);
         String line = this.reader.readLine();
         if (StringUtils.isEmptyString(line)) {
-            System.out.println("logging.persistence.connection.invalid_response");
+            System.out.println("logging.persistence.instance.invalid_response");
         }
         _response.processHeader(line);
         if (line.endsWith(":")) {
             do {
                 if (StringUtils.isEmptyString(line = this.reader.readLine())) {
-                    System.out.println("logging.persistence.connection.invalid_response");
+                    System.out.println("logging.persistence.instance.invalid_response");
                 }
                 if (MULTILINE_END.matcher(line).matches()) break;
                 if (MULTILINE_DOT.matcher(line).matches()) {
                     line = line.substring(1);
                 }
-                System.out.println(line);
+
+                if (this instanceof TickerConnection) {
+                    try {
+                        JSONObject obj = (JSONObject) parser.parse(line);
+                        LDCDViewer.instance.objects.add(obj);
+                        LDCDViewer.instance.mapCurrentFloor();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                System.out.println("receive << " + line);
                 _response.getProcessor().processLine(line);
             } while (true);
         }
@@ -181,6 +198,7 @@ extends AbstractBean {
     }
 
     public final void reconnect(Server _server) throws IOException {
+        System.out.println(_server.getIp());
         this.disconnect();
         this.server = _server;
         this.connect();
@@ -219,9 +237,8 @@ extends AbstractBean {
                 builder.append("=");
                 builder.append(encoder.encode(_request.getDataObject()));
             }
-            System.out.println(builder.toString());
             this.writer.println(builder.toString());
-            System.out.println(builder.toString());
+            System.out.println("send >> " + builder.toString());
             this.receive(response);
             if (!response.isFailed() && _request.getIs() != null) {
                 byte[] buffer = new byte[65536];

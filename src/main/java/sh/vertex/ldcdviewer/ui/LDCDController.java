@@ -1,5 +1,9 @@
 package sh.vertex.ldcdviewer.ui;
 
+import de.sbe.ldc.persistence.net.Reconnector;
+import de.sbe.ldc.persistence.net.TickerConnection;
+import de.sbe.ldc.persistence.protocol.Command;
+import de.sbe.ldc.persistence.protocol.Request;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +25,7 @@ import java.io.*;
 
 /**
  * Controller to load in a json file
- *
+ * <p>
  * created by paul on 2019-01-18 at 11:51
  */
 public class LDCDController {
@@ -48,7 +52,7 @@ public class LDCDController {
                         JSONObject obj = (JSONObject) parser.parse(line);
                         LDCDViewer.instance.objects.add(obj);
                         if (current % 2 == 0)
-                        Platform.runLater(() -> loadProgress.setProgress(progress));
+                            Platform.runLater(() -> loadProgress.setProgress(progress));
                         current++;
                     }
 
@@ -115,5 +119,29 @@ public class LDCDController {
         } finally {
             is.close();
         }
+    }
+
+    public void useLive(ActionEvent actionEvent) {
+        LDCDViewer.instance.setLive();
+        new Thread(() -> {
+            try {
+                new Reconnector().reconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        Platform.runLater(() -> {
+            try {
+                Stage window = (Stage) (LDCDUI.stageInstance.getScene().getWindow());
+                Parent buildingScreen = FXMLLoader.load(this.getClass().getResource("/assets/buildingoverview.fxml"));
+                Scene buildingScene = new Scene(buildingScreen);
+                window.setScene(buildingScene);
+                window.show();
+
+                LDCDViewer.instance.mapCurrentFloor();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

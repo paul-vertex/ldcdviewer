@@ -3,25 +3,31 @@
  */
 package de.sbe.ldc.persistence.net;
 
-import de.sbe.ldc.persistence.net.AbstractConnection;
-import de.sbe.ldc.persistence.net.CommunicationManager;
 import de.sbe.ldc.persistence.protocol.Command;
 import de.sbe.ldc.persistence.protocol.Request;
-import de.sbe.ldc.persistence.protocol.Response;
 import de.sbe.ldc.persistence.sync.TickerProcessor;
+import de.sbe.utils.ConcurrentUtils;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import sh.vertex.ldcdviewer.LDCDViewer;
+import sh.vertex.ldcdviewer.ui.LDCDUI;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-class TickerConnection
-        extends AbstractConnection {
-    private static final long serialVersionUID = -2049850476391786759L;
+public class TickerConnection extends AbstractConnection {
 
-    TickerConnection() {
+    private final ExecutorService service = ConcurrentUtils.newSingleDaemonThreadExecutor();
+
+    public static TickerConnection instance;
+
+    public TickerConnection() {
         super(Integer.MAX_VALUE);
     }
 
@@ -29,15 +35,15 @@ class TickerConnection
     protected void doShutdown() {
     }
 
-    void tick() throws IOException {
-        Request ticker = new Request(Command.TICKER);
-        this.send(ticker);
-        new Thread(new Ticker()).start();
+    public void tick() throws IOException {
+        instance = this;
 
+        Request ticker = new Request(Command.STATE_GET);
+        this.send(ticker);
+        this.service.execute(new Ticker());
     }
 
-    private final class Ticker
-            implements Runnable {
+    private final class Ticker implements Runnable {
         private final TickerProcessor processor = new TickerProcessor();
 
         Ticker() {
@@ -45,21 +51,23 @@ class TickerConnection
 
         @Override
         public void run() {
-            while (TickerConnection.this.isValid()) {
-                TickerConnection.this.getLock().lock();
+            while (isValid()) {
+                getLock().lock();
                 try {
                     String line = TickerConnection.this.getReader().readLine();
+                    if (line == null)
+                        break;
                     if (line.isEmpty()) {
                         System.out.println("???");
                         continue;
                     }
-                    System.out.println(line);
+
                     this.processor.processLine(line);
-                } catch (Exception _e) {
-                    _e.printStackTrace();
+                } catch (Exception anyException) {
+                    anyException.printStackTrace();
                     CommunicationManager.getInstance().refresh();
                 } finally {
-                    TickerConnection.this.getLock().unlock();
+                    getLock().unlock();
                 }
             }
         }

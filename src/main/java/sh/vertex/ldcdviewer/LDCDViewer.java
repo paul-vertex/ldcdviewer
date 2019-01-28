@@ -1,5 +1,6 @@
 package sh.vertex.ldcdviewer;
 
+import de.sbe.ldc.persistence.net.Reconnector;
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -12,6 +13,7 @@ import sh.vertex.ldcdviewer.ui.LDCDUI;
 import sh.vertex.ldcdviewer.ui.building.*;
 import sh.vertex.ldcdviewer.ui.building.floors.FirstFloor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,7 @@ public class LDCDViewer extends Application {
     public boolean hostsPerRoom;
     public boolean shiftDown;
     public boolean currentlyRendering;
+    public boolean live;
 
     /**
      * Launch Method / Display the Main Frame
@@ -64,6 +67,7 @@ public class LDCDViewer extends Application {
         userInterface.addEventFilter(KeyEvent.KEY_RELEASED, (event) -> {if (event.getCode() == KeyCode.SHIFT) shiftDown = false;});
         userInterface.setOnCloseRequest((event) -> buildingRenderer.threadStop = true);
         userInterface.addEventFilter(KeyEvent.KEY_PRESSED, (event) -> buildingRenderer.keyTyped(event));
+
     }
 
     /**
@@ -170,5 +174,12 @@ public class LDCDViewer extends Application {
                 .replace("\f", "\\f")
                 .replace("\'", "\\'")
                 .replace("\"", "\\\"");
+    }
+
+    public void setLive() {
+        for (int i = 0; i < 5; i++)
+            System.out.println("Live!");
+
+        live = true;
     }
 }

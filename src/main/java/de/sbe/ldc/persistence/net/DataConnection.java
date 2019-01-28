@@ -3,28 +3,25 @@
  */
 package de.sbe.ldc.persistence.net;
 
-import de.sbe.ldc.domain.Server;
-import de.sbe.ldc.persistence.net.AbstractConnection;
-import de.sbe.ldc.persistence.net.CommunicationManager;
 import de.sbe.ldc.persistence.protocol.Command;
 import de.sbe.ldc.persistence.protocol.Request;
 import de.sbe.ldc.persistence.protocol.Response;
 import de.sbe.utils.ConcurrentUtils;
 import de.sbe.utils.Settings;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-class DataConnection
-extends AbstractConnection {
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class DataConnection extends AbstractConnection {
+
+    public static DataConnection instance;
+
     private static final long serialVersionUID = 2399403360305135516L;
     private final transient ScheduledExecutorService service = ConcurrentUtils.newSingleDaemonThreadScheduledExecutor();
 
     DataConnection() {
         super(Settings.getInt("net.connection_timeout"));
+        instance = this;
         this.service.scheduleAtFixedRate(new PingRunnable(this), Settings.getLong("net.ping_period"), Settings.getLong("net.ping_period"), TimeUnit.MILLISECONDS);
     }
 
@@ -33,14 +30,13 @@ extends AbstractConnection {
         this.service.shutdownNow();
         try {
             this.send(new Request(Command.QUIT));
-        }
-        catch (Exception _ioe) {
+        } catch (Exception _ioe) {
             _ioe.printStackTrace();
         }
     }
 
     private class PingRunnable
-    implements Runnable {
+            implements Runnable {
         private final AbstractConnection connection;
 
         PingRunnable(AbstractConnection _owner) {
@@ -59,8 +55,7 @@ extends AbstractConnection {
                 if (response.isFailed()) {
                     System.out.println(response.getRequest().getInfo());
                 }
-            }
-            catch (Exception _e) {
+            } catch (Exception _e) {
                 _e.printStackTrace();
                 CommunicationManager.getInstance().refresh();
             }
