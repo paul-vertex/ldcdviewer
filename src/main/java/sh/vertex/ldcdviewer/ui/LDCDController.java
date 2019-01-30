@@ -59,11 +59,7 @@ public class LDCDController {
                     Platform.runLater(() -> {
                         try {
                             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                            Parent attackScreen = FXMLLoader.load(this.getClass().getResource("/assets/buildingoverview.fxml"));
-                            Scene attackScene = new Scene(attackScreen);
-                            window.setScene(attackScene);
-                            window.show();
-                            LDCDViewer.instance.mapCurrentFloor();
+                            displayBuildingOverwie(window);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -133,15 +129,19 @@ public class LDCDController {
         Platform.runLater(() -> {
             try {
                 Stage window = (Stage) (LDCDUI.stageInstance.getScene().getWindow());
-                Parent buildingScreen = FXMLLoader.load(this.getClass().getResource("/assets/buildingoverview.fxml"));
-                Scene buildingScene = new Scene(buildingScreen);
-                window.setScene(buildingScene);
-                window.show();
-
-                LDCDViewer.instance.mapCurrentFloor();
+                displayBuildingOverwie(window);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void displayBuildingOverwie(Stage window) throws IOException {
+        Parent buildingScreen = FXMLLoader.load(this.getClass().getResource("/assets/buildingoverview.fxml"));
+        Scene buildingScene = new Scene(buildingScreen);
+        window.setScene(buildingScene);
+        window.show();
+
+        LDCDViewer.instance.mapCurrentFloor();
     }
 }
