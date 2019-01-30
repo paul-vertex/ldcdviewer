@@ -18,9 +18,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import sh.vertex.ldcdviewer.LDCDViewer;
 import sh.vertex.ldcdviewer.util.DisplayUtil;
-import sh.vertex.ldcdviewer.ui.building.floors.FirstFloor;
-import sh.vertex.ldcdviewer.ui.building.floors.SecondFloor;
-import sh.vertex.ldcdviewer.ui.building.floors.ThirdFloor;
 import sh.vertex.ldcdviewer.util.TextUtil;
 
 import java.io.IOException;
@@ -254,19 +251,13 @@ public class BuildingRenderer {
                 Floor Buttons
              */
             if (DisplayUtil.isHovering(0, 81, 180, 97, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new ThirdFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
+                LDCDViewer.instance.SwitchFloor(2);
             }
             if (DisplayUtil.isHovering(0, 131, 180, 147, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new SecondFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
+                LDCDViewer.instance.SwitchFloor(1);
             }
             if (DisplayUtil.isHovering(0, 181, 180, 197, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new FirstFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
+                LDCDViewer.instance.SwitchFloor(0);
             }
             if (DisplayUtil.isHovering(180, 0, 1020, 475, event.getX(), event.getY()))
                 menuExpanded = false;

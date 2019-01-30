@@ -1,6 +1,5 @@
 package sh.vertex.ldcdviewer;
 
-import de.sbe.ldc.persistence.net.Reconnector;
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -11,11 +10,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sh.vertex.ldcdviewer.ui.LDCDUI;
 import sh.vertex.ldcdviewer.ui.building.*;
-import sh.vertex.ldcdviewer.ui.building.floors.FirstFloor;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +32,7 @@ public class LDCDViewer extends Application {
         launch(args);
     }
 
+    private List<Floor> floors = new ArrayList<>();
     public List<JSONObject> objects = new ArrayList<>();
     public List<String> users = new ArrayList<>();
     public BuildingRenderer buildingRenderer;
@@ -55,8 +52,10 @@ public class LDCDViewer extends Application {
         /* Set Instance */
         instance = this;
 
+        InitFloors();
+
         this.buildingRenderer = new BuildingRenderer();
-        this.currentFloor = new FirstFloor();
+        this.currentFloor = floors.get(0);
 
         LDCDUI userInterface = new LDCDUI();
         userInterface.show();
@@ -68,6 +67,18 @@ public class LDCDViewer extends Application {
         userInterface.setOnCloseRequest((event) -> buildingRenderer.threadStop = true);
         userInterface.addEventFilter(KeyEvent.KEY_PRESSED, (event) -> buildingRenderer.keyTyped(event));
 
+    }
+
+    public void SwitchFloor(int floorNumber) {
+        currentFloor = floors.get(floorNumber);
+        currentRoom = null;
+        mapCurrentFloor();
+    }
+
+    private void InitFloors() {
+        floors.add(new Floor(0));
+        floors.add(new Floor(1));
+        floors.add(new Floor(2));
     }
 
     /**
