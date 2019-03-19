@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration
+   scan="true"
+   scanPeriod="10 seconds">
+   <appender
+      name="CONSOLE"
+      class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+         <pattern>%date{HH:mm:ss.SSS} %-5level [%thread] %logger - %message%n%xThrowable</pattern>
+      </encoder>
+   </appender>
+   <appender
+      name="DIALOG"
+      class="de.sbe.ldcd.ui.logging.DialogAppender">
+      <chunk>120</chunk>
+   </appender>
+   <appender
+      name="FILE"
+      class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>/tmp/ldcd.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+         <fileNamePattern>/tmp/ldcd.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+         <maxHistory>3</maxHistory>
+         <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>10MB</maxFileSize>
+         </timeBasedFileNamingAndTriggeringPolicy>
+      </rollingPolicy>
+      <encoder>
+         <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger - %message%n%xThrowable</pattern>
+      </encoder>
+   </appender>
+   <logger
+      name="de.sbe.ldc"
+      level="INFO" />
+   <logger
+      name="de.sbe.ldcd"
+      level="INFO" />
+   <logger
+      name="de.sbe.ldcd.ui"
+      level="ERROR">
+      <appender-ref ref="DIALOG" />
+   </logger>
+   <root level="INFO">
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="FILE" />
+   </root>
+</configuration>

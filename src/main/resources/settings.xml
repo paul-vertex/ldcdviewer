@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">   
+   <entry key="version">31</entry>
+   <entry key="codename">espressivo</entry>
+   
+   <!-- Vorauswahl für das automatische Beenden einer Klassenarbeit in Sekunden. Die Zahl Null steht dabei für die Deaktivierung des Automatismus.  -->
+   <entry key="exam.default_expires_value">0</entry>
+   
+   <!-- Auswahlmöglichkeiten für das automatische Beenden einer Klassenarbeit in Sekunden. Die Zahl Null steht dabei für die Deaktivierung des Automatismus. -->
+   <entry key="exam.expires_values">0, 2700, 5400</entry>
+   
+   <!-- Leztes verwendetes Verzeichnis. -->
+   <entry key="file.last_dir" />
+   
+   <!-- Dürfen die angemeldeten Benutzer die initialisierte Aktion (abmelden, neustarten...) abbrechen? -->
+   <entry key="host.default_cancelable">false</entry>
+   
+   <!-- Zeitspanne in Sekunden, bis die initialisierte Aktion (abmelden, neustarten...) tatsächlich ausgeführt wird. -->
+   <entry key="host.default_timeout">60</entry>
+   
+   <!-- Vorauswahl für das automatische Beenden einer Aktion (internet, webfilter...) in Sekunden. Die Zahl Null steht dabei für die Deaktivierung des Automatismus. -->
+   <entry key="host.default_expires_value">2700</entry>
+   
+   <entry key="host.include_admin_host">false</entry>
+   <entry key="host.include_my_host">false</entry>
+   <entry key="host.include_teacher_host">false</entry>
+   
+   <!-- Auswahlmöglichkeiten für das automatische Beenden einer Aktion (internet, webfilter...) in Sekunden. Die Zahl Null steht dabei für die Deaktivierung des Automatismus. -->
+   <entry key="host.expires_values">0, 60, 300, 900, 2700, 5400</entry>
+   
+   <entry key="net.audit_host">audit</entry>
+   
+   <entry key="net.audit_port">443</entry>
+   
+   <!-- Anzahl gleichzeitiger Datenverbindungen zum Server. -->
+   <entry key="net.connection_number">2</entry>
+   
+   <!-- Maximale Dauer in Millisekunden, in der die Console auf eine Antwort des Servers wartet. -->
+   <entry key="net.connection_timeout">60000</entry>
+   
+   <entry key="net.discover_period">1000</entry>
+   
+   <entry key="net.discover_trials">3</entry>
+   
+   <entry key="net.packet_size">65535</entry>
+   
+   <!-- Zeitspanne in Millisekunden, die zwischen den einzelnen PINGs eingehalten wird. -->
+   <entry key="net.ping_period">60000</entry>
+   
+   <!-- Zeitspanne in Millisekunden. -->
+   <entry key="net.reconnect_delay">1000</entry>
+   
+   <entry key="net.server_host">master</entry>
+   
+   <entry key="net.server_port">4284</entry>
+   
+   <!-- Port den die Console öffnet, um eingehende Verbindungen zu erhalten. -->
+   <entry key="net.console_port">4288</entry>
+        
+   <!-- Zeitspanne in Millisekunden. -->
+   <entry key="view.dissolve_delay">100</entry>
+   
+   <entry key="view.dissolve_step">0.2</entry>
+   
+   <!-- Maximale prozentuale Größe der Geräte im Bezug auf die Größe des Raumes. -->
+   <entry key="view.host_ratio.max">10</entry>
+   
+   <!-- Minimale prozentuale Größe der Geräte im Bezug auf die Größe des Raumes. -->
+   <entry key="view.host_ratio.min">3</entry>
+   
+   <!-- Zeitspanne in Millisekunden, in der  -->
+   <entry key="view.log_display_period">10000</entry>
+   
+   <!-- Zeitspanne (in Millisekunden) die zwischen 2 aufeinander folgende Bildschirmaufnahmen eingehalten wird. -->
+   <entry key="view.monitor.default_screenshot_delay">1000</entry>
+   
+   <!-- Raster im Raum in Pixeln. -->
+   <entry key="view.room_grid">2</entry>
+      
+   <!-- Zeitspanne in Millisekunden, die zwischen der Eingabe und der tatsächlichen Suche eingehalten wird. -->
+   <entry key="view.search_delay">500</entry>
+   
+   <!-- Zeitspanne in Millisekunden, die zwischen einer Änderung und ihrer visuellen Darstellung in der Tabelle eingehalten wird. -->
+   <entry key="view.table_update_delay">750</entry>
+</properties>
