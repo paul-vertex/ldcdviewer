@@ -45,6 +45,22 @@ public class Room {
         return state;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getW() {
+        return w;
+    }
+
+    public double getH() {
+        return h;
+    }
+
     public void setState(RoomState state) {
         this.state = state;
     }

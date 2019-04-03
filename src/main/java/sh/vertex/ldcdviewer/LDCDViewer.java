@@ -7,16 +7,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
+import org.apache.commons.collections.ComparatorUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import sh.vertex.ldcdviewer.ui.LDCDUI;
 import sh.vertex.ldcdviewer.ui.building.*;
-import sh.vertex.ldcdviewer.ui.building.floors.FirstFloor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * logoDIDACT User Export JSON Viewer
@@ -40,6 +38,7 @@ public class LDCDViewer extends Application {
     public List<String> users = new ArrayList<>();
     public BuildingRenderer buildingRenderer;
     public Floor currentFloor;
+    public List<Floor> floors;
     public Room currentRoom;
     public boolean hostsPerRoom;
     public boolean shiftDown;
@@ -55,8 +54,13 @@ public class LDCDViewer extends Application {
         /* Set Instance */
         instance = this;
 
+        floors = new FloorParser().parse();
+        System.out.println(floors.size());
+        floors.sort(Comparator.comparingInt(Floor::getFloorNumber));
+        Collections.reverse(floors);
+
         this.buildingRenderer = new BuildingRenderer();
-        this.currentFloor = new FirstFloor();
+        this.currentFloor = floors.size() > 0 ? floors.get(0) : new Floor(0);
 
         LDCDUI userInterface = new LDCDUI();
         userInterface.show();

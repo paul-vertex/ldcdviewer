@@ -14,8 +14,15 @@ public class Floor {
 
     private int floorNumber;
     private List<Room> floorRooms;
+    private String floorName;
+
+    public Floor() {
+        this.floorName = "";
+        this.floorRooms = new ArrayList<>();
+    }
 
     public Floor(int floorNumber) {
+        this.floorName = "";
         this.floorNumber = floorNumber;
         this.floorRooms = new ArrayList<>();
     }
@@ -30,6 +37,18 @@ public class Floor {
 
     void renderFloor(GraphicsContext gc, double mouseX, double mouseY) {
         this.floorRooms.forEach(room -> room.render(gc, mouseX, mouseY));
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public void setFloorName(String floorName) {
+        this.floorName = floorName;
+    }
+
+    public String getFloorName() {
+        return floorName;
     }
 
     public List<Room> getFloorRooms() {

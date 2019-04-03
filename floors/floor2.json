@@ -1,0 +1,343 @@
+[
+  {
+    "type": "floor",
+    "id": 1,
+    "name": "Second Floor"
+  },
+  {
+    "yPos": 0.0,
+    "name": "1.501",
+    "width": 83.0,
+    "xPos": 275.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 15.0,
+    "name": "1.506",
+    "width": 83.0,
+    "xPos": 167.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 15.0,
+    "name": "1.507",
+    "width": 83.0,
+    "xPos": 82.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 15.0,
+    "name": "1.508",
+    "width": 55.0,
+    "xPos": 25.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 15.0,
+    "name": "1.401",
+    "width": 83.0,
+    "xPos": 383.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 15.0,
+    "name": "1.402",
+    "width": 83.0,
+    "xPos": 468.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "1.408",
+    "width": 59.0,
+    "xPos": 710.0,
+    "type": "room",
+    "height": 50.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "1.409",
+    "width": 39.0,
+    "xPos": 669.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "1.410",
+    "width": 35.0,
+    "xPos": 632.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "1.411",
+    "width": 35.0,
+    "xPos": 595.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 295.0,
+    "name": "1.301",
+    "width": 105.0,
+    "xPos": 664.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 52.0,
+    "name": "1.306",
+    "width": 59.0,
+    "xPos": 710.0,
+    "type": "room",
+    "height": 98.0
+  },
+  {
+    "yPos": 152.0,
+    "name": "1.305",
+    "width": 59.0,
+    "xPos": 710.0,
+    "type": "room",
+    "height": 83.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.201",
+    "width": 83.0,
+    "xPos": 383.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.202",
+    "width": 83.0,
+    "xPos": 468.0,
+    "type": "room",
+    "height": 55.0
+  },
+  {
+    "yPos": 295.0,
+    "name": "1.209",
+    "width": 45.0,
+    "xPos": 576.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 295.0,
+    "name": "1.208",
+    "width": 39.0,
+    "xPos": 623.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.101",
+    "width": 35.0,
+    "xPos": 285.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.104",
+    "width": 35.0,
+    "xPos": 212.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.105",
+    "width": 35.0,
+    "xPos": 175.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.106",
+    "width": 74.0,
+    "xPos": 99.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.107",
+    "width": 35.0,
+    "xPos": 62.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.0,
+    "name": "1.108",
+    "width": 45.0,
+    "xPos": 15.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 324.0,
+    "name": "1.109",
+    "width": 45.0,
+    "xPos": 15.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 308.0,
+    "name": "1.110",
+    "width": 70.0,
+    "xPos": 62.0,
+    "type": "room",
+    "height": 50.0
+  },
+  {
+    "yPos": 308.0,
+    "name": "1.111",
+    "width": 89.0,
+    "xPos": 134.0,
+    "type": "room",
+    "height": 50.0
+  },
+  {
+    "yPos": 324.0,
+    "name": "1.114",
+    "width": 95.0,
+    "xPos": 225.0,
+    "type": "room",
+    "height": 34.0
+  },
+  {
+    "yPos": 257.5,
+    "name": "square",
+    "width": 62.0,
+    "xPos": 321.0,
+    "type": "decorative",
+    "height": 70.0
+  },
+  {
+    "yPos": 70.0,
+    "name": "C1",
+    "width": 16.0,
+    "xPos": 368.0,
+    "type": "decorative",
+    "height": 187.0
+  },
+  {
+    "yPos": 70.0,
+    "name": "C2",
+    "width": 16.0,
+    "xPos": 694.0,
+    "type": "decorative",
+    "height": 187.0
+  },
+  {
+    "yPos": 292.0,
+    "name": "100",
+    "width": 302.0,
+    "xPos": 17.0,
+    "type": "decorative",
+    "height": 16.0
+  },
+  {
+    "yPos": 314.0,
+    "name": "200",
+    "width": 191.0,
+    "xPos": 385.0,
+    "type": "decorative",
+    "height": 16.0
+  },
+  {
+    "yPos": 282.0,
+    "name": "201",
+    "width": 24.0,
+    "xPos": 553.0,
+    "type": "decorative",
+    "height": 32.0
+  },
+  {
+    "yPos": 282.0,
+    "name": "202",
+    "width": 132.0,
+    "xPos": 577.5,
+    "type": "decorative",
+    "height": 12.0
+  },
+  {
+    "yPos": 238.0,
+    "name": "300",
+    "width": 59.0,
+    "xPos": 710.0,
+    "type": "decorative",
+    "height": 56.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "400",
+    "width": 236.0,
+    "xPos": 360.0,
+    "type": "decorative",
+    "height": 13.0
+  },
+  {
+    "yPos": 16.0,
+    "name": "401",
+    "width": 42.0,
+    "xPos": 552.0,
+    "type": "decorative",
+    "height": 20.0
+  },
+  {
+    "yPos": 36.0,
+    "name": "402",
+    "width": 160.0,
+    "xPos": 552.0,
+    "type": "decorative",
+    "height": 13.0
+  },
+  {
+    "yPos": 0.0,
+    "name": "500",
+    "width": 250.0,
+    "xPos": 25.0,
+    "type": "decorative",
+    "height": 13.0
+  },
+  {
+    "yPos": 36.0,
+    "name": "501",
+    "width": 132.0,
+    "xPos": 252.0,
+    "type": "decorative",
+    "height": 13.0
+  },
+  {
+    "yPos": 16.0,
+    "name": "502",
+    "width": 23.0,
+    "xPos": 252.0,
+    "type": "decorative",
+    "height": 17.0
+  },
+  {
+    "yPos": 16.0,
+    "name": "503",
+    "width": 23.0,
+    "xPos": 360.0,
+    "type": "decorative",
+    "height": 17.0
+  }
+]

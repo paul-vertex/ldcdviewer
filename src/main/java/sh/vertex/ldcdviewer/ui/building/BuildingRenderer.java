@@ -18,9 +18,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import sh.vertex.ldcdviewer.LDCDViewer;
 import sh.vertex.ldcdviewer.util.DisplayUtil;
-import sh.vertex.ldcdviewer.ui.building.floors.FirstFloor;
-import sh.vertex.ldcdviewer.ui.building.floors.SecondFloor;
-import sh.vertex.ldcdviewer.ui.building.floors.ThirdFloor;
 import sh.vertex.ldcdviewer.util.TextUtil;
 
 import java.io.IOException;
@@ -186,9 +183,10 @@ public class BuildingRenderer {
 
             gc.setFont(menu);
             gc.setFill(new Color(0.341, 0.397, 0.558, 1f));
-            gc.fillText("Third Floor", 40, 98);
-            gc.fillText("Second Floor", 40, 148);
-            gc.fillText("First Floor", 40, 198);
+            for (int i = LDCDViewer.instance.floors.size() - 1; i > -1; i--) {
+                Floor f = LDCDViewer.instance.floors.get(i);
+                gc.fillText(f.getFloorName(), 40, 98 + (i * 50));
+            }
 
             if (LDCDViewer.instance.live) {
                 /* Test Function */
@@ -253,20 +251,12 @@ public class BuildingRenderer {
             /*
                 Floor Buttons
              */
-            if (DisplayUtil.isHovering(0, 81, 180, 97, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new ThirdFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
-            }
-            if (DisplayUtil.isHovering(0, 131, 180, 147, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new SecondFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
-            }
-            if (DisplayUtil.isHovering(0, 181, 180, 197, event.getX(), event.getY())) {
-                LDCDViewer.instance.currentFloor = new FirstFloor();
-                LDCDViewer.instance.currentRoom = null;
-                LDCDViewer.instance.mapCurrentFloor();
+            for (int i = LDCDViewer.instance.floors.size() - 1; i > -1; i--) {
+                if (DisplayUtil.isHovering(0, 81 + (i * 50), 180, 97 + (i * 50), event.getX(), event.getY())) {
+                    LDCDViewer.instance.currentFloor = LDCDViewer.instance.floors.get(i);
+                    LDCDViewer.instance.currentRoom = null;
+                    LDCDViewer.instance.mapCurrentFloor();
+                }
             }
             if (DisplayUtil.isHovering(180, 0, 1020, 475, event.getX(), event.getY()))
                 menuExpanded = false;

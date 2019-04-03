@@ -90,7 +90,7 @@ public class RoomRenderer {
         gc.setFont(source16);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-        gc.fillText(String.valueOf(Math.round(percentage * 10000) / 100) + "%", 45 + 100, 110);
+        gc.fillText(Math.round(percentage * 10000) / 100 + "%", 45 + 100, 110);
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setTextBaseline(VPos.BASELINE);
 
